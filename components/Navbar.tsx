@@ -22,16 +22,16 @@ export default function Navbar() {
       <div className="mx-auto flex h-[74px] max-w-[1280px] items-center justify-between px-6 lg:px-10">
         {/* Logo */}
         <button
+          type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="text-left"
+          className="flex items-center"
+          aria-label="Go to homepage"
         >
-          <div className="font-sans text-[16px] font-bold tracking-[0.12em] text-white">
-            STHORAM<span className="text-[#4DE7E5]">◆</span>LABS
-          </div>
-
-          <div className="mt-0.5 font-sans text-[8px] font-medium tracking-[0.28em] text-white/50">
-            DEEP TECH INNOVATIONS
-          </div>
+          <img
+            src="/images/sthoram-logo.png"
+            alt="STHORAM Labs"
+            className="block h-auto w-[205px]"
+          />
         </button>
 
         {/* Navigation */}
@@ -39,6 +39,7 @@ export default function Navbar() {
           {navItems.map((item) => (
             <button
               key={item.id}
+              type="button"
               onClick={() => scrollToSection(item.id)}
               className="font-sans text-[14px] font-normal text-white/65 transition-colors duration-200 hover:text-white"
             >
@@ -47,6 +48,7 @@ export default function Navbar() {
           ))}
 
           <button
+            type="button"
             onClick={() => scrollToSection("partner")}
             className="rounded-full border border-[#4DE7E5]/70 px-5 py-2.5 font-sans text-[14px] font-medium text-[#8DEDED] transition-all duration-200 hover:bg-[#4DE7E5]/10"
           >
