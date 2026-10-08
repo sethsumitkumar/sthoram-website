@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Check } from "lucide-react";
-import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
+import { Check } from "lucide-react";
+import { Bodoni_Moda, Instrument_Sans } from "next/font/google";
 
-const display = Bricolage_Grotesque({
+/* High-contrast didone: luxury / editorial feel, close to the reference slide */
+const display = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["500", "600", "700", "800", "900"],
   display: "swap",
 });
 
 const body = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-/* ---------- Count-up number (runs once when visible) ---------- */
+/* ---------- Count-up number ---------- */
+
 function CountUp({
   to,
   decimals = 0,
@@ -45,21 +47,14 @@ function CountUp({
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-
         io.disconnect();
 
         const start = performance.now();
-
         const tick = (now: number) => {
           const t = Math.min((now - start) / duration, 1);
-
           setValue(to * (1 - Math.pow(1 - t, 4)));
-
-          if (t < 1) {
-            raf = requestAnimationFrame(tick);
-          }
+          if (t < 1) raf = requestAnimationFrame(tick);
         };
-
         raf = requestAnimationFrame(tick);
       },
       { threshold: 0.4 }
@@ -69,10 +64,7 @@ function CountUp({
 
     return () => {
       io.disconnect();
-
-      if (raf !== undefined) {
-        cancelAnimationFrame(raf);
-      }
+      if (raf !== undefined) cancelAnimationFrame(raf);
     };
   }, [to, duration]);
 
@@ -84,29 +76,34 @@ function CountUp({
   );
 }
 
-/* ---------- Stat cell: quiet, one hairline reacts on hover ---------- */
-function Stat({
-  children,
+/* ---------- Stat Card ---------- */
+/* Quiet on purpose: ivory numerals, one brand accent, no glow/gradients */
+
+function StatCard({
   label,
-  className = "",
+  children,
 }: {
-  children: React.ReactNode;
   label: string;
-  className?: string;
+  children: React.ReactNode;
 }) {
   return (
     <div
-      className={`group relative flex flex-col items-center justify-center px-4 py-6 text-center sm:py-7 ${className}`}
+      className="group relative flex h-[172px] flex-col items-center justify-center overflow-hidden rounded-[6px] border border-white/[0.07] bg-[#0A0F18] px-5 text-center transition-colors duration-500 hover:border-[#0796E2]/35 hover:bg-[#0C121D] sm:h-[190px] lg:h-[208px]"
+      style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)" }}
     >
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#4DE7E5] to-transparent transition-transform duration-500 ease-out group-hover:scale-x-100" />
+      {/* Short accent that opens to full width on hover */}
+      <span className="absolute left-1/2 top-0 h-[2px] w-10 -translate-x-1/2 bg-[#0796E2] transition-[width] duration-500 ease-out group-hover:w-full" />
 
+      {/* Value */}
       <div
-        className={`${display.className} flex items-center gap-1.5 bg-gradient-to-b from-[#7DF2F0] to-[#3FD3D6] bg-clip-text text-[26px] font-semibold leading-none tracking-[-0.01em] text-transparent transition-all duration-500 group-hover:from-white group-hover:to-[#5CE8D2] sm:text-[32px]`}
+        className={`${display.className} flex items-center justify-center gap-1.5 text-[50px] font-medium leading-none tracking-[-0.01em] text-[#F2F5FA] sm:text-[58px] lg:text-[66px]`}
+        style={{ fontVariantNumeric: "lining-nums" }}
       >
         {children}
       </div>
 
-      <div className="mt-2.5 text-[11px] font-medium uppercase tracking-[0.12em] text-[#64748A] transition-colors duration-500 group-hover:text-[#9FDCD9]">
+      {/* Label (font size increased) */}
+      <div className="mt-6 text-[15px] font-medium leading-none tracking-[0.03em] text-[#8E9BAF] sm:mt-7 sm:text-[17px] lg:text-[19px]">
         {label}
       </div>
     </div>
@@ -114,196 +111,138 @@ function Stat({
 }
 
 export default function Hero() {
-  const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({
-      behavior: "smooth",
-    });
-  };
-
   return (
     <section
-      className={`${body.className} relative flex min-h-[100svh] flex-col overflow-hidden bg-[#04070D] pt-[74px]`}
+      className={`${body.className} relative min-h-[calc(100svh-68px)] overflow-hidden bg-black text-white`}
     >
       <style>{`
         @keyframes hero-rise {
-          from { opacity: 0; transform: translateY(16px); }
+          from { opacity: 0; transform: translateY(14px); }
           to   { opacity: 1; transform: none; }
         }
-
-        @keyframes hero-ping {
-          0% { transform: scale(1); opacity: .6; }
-          80%,100% { transform: scale(3); opacity: 0; }
+        @keyframes hero-mark {
+          from { opacity: 0; transform: translateY(10px); filter: blur(8px); }
+          to   { opacity: 1; transform: none; filter: blur(0); }
+        }
+        @keyframes hero-rule {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
         }
 
-        .hero-rise {
-          opacity: 0;
-          animation: hero-rise .9s cubic-bezier(.2,.7,.2,1) forwards;
-        }
+        .hero-rise { opacity: 0; animation: hero-rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+        .hero-mark { opacity: 0; animation: hero-mark 1.3s cubic-bezier(.2,.7,.2,1) .05s forwards; }
+        .rule-l { transform-origin: right; transform: scaleX(0); animation: hero-rule 1.1s cubic-bezier(.2,.7,.2,1) .7s forwards; }
+        .rule-r { transform-origin: left;  transform: scaleX(0); animation: hero-rule 1.1s cubic-bezier(.2,.7,.2,1) .7s forwards; }
 
-        .hero-ping {
-          animation: hero-ping 2.4s cubic-bezier(0,0,.2,1) infinite;
+        .stat-plus {
+          align-self: flex-start;
+          margin-top: 0.14em;
+          font-size: 0.46em;
+          font-weight: 500;
+          line-height: 1;
+          color: #0796E2;
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .hero-rise {
-            animation: none;
-            opacity: 1;
-          }
-
-          .hero-ping {
-            animation: none;
-          }
+          .hero-rise, .hero-mark { animation: none; opacity: 1; filter: none; transform: none; }
+          .rule-l, .rule-r { animation: none; transform: none; }
         }
       `}</style>
 
-      {/* ---------- Background (same palette) ---------- */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.2]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(72,224,224,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(72,224,224,0.10) 1px, transparent 1px)",
-          backgroundSize: "54px 54px",
-          maskImage:
-            "radial-gradient(ellipse 75% 65% at 50% 45%, #000 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 75% 65% at 50% 45%, #000 30%, transparent 100%)",
-        }}
-      />
+      {/* ---------- Background ---------- */}
 
-      <div className="pointer-events-none absolute left-[56%] top-[40%] h-[560px] w-[760px] -translate-x-1/2 rounded-full bg-[#0A9E8F]/[0.15] blur-[150px]" />
+      <div className="pointer-events-none absolute inset-0">
+        {/* Soft right-side blue atmosphere */}
+        <div className="absolute right-[-7%] top-[-12%] h-[680px] w-[680px] rounded-full bg-[#071521] opacity-80 blur-[25px]" />
 
-      <div className="pointer-events-none absolute right-[6%] top-[14%] h-[380px] w-[380px] rounded-full bg-[#2BA8FF]/[0.11] blur-[130px]" />
+        {/* Large tilted shape */}
+        <div className="absolute right-[-15%] top-[-5%] h-[720px] w-[520px] rotate-[-19deg] rounded-full border border-[#12293B]/50 bg-[#06111B]/35" />
 
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 45%, rgba(2,4,8,0.7) 100%)",
-        }}
-      />
+        {/* Faint light behind the wordmark */}
+        <div className="absolute left-1/2 top-[18%] h-[360px] w-[900px] -translate-x-1/2 rounded-full bg-[#0796E2]/[0.07] blur-[120px]" />
 
-      {/* ---------- Main content ---------- */}
-      <div className="relative mx-auto flex w-full max-w-[1280px] flex-1 items-center px-6 py-8 lg:px-10 lg:py-10">
-        <div className="max-w-[1100px]">
-          {/* Status line */}
-          <div
-            className="hero-rise mb-6 flex items-center gap-3 lg:mb-7"
-            style={{ animationDelay: "0.05s" }}
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="hero-ping absolute inline-flex h-full w-full rounded-full bg-[#4DE7E5]" />
-
-              <span className="relative h-2 w-2 rounded-full bg-[#4DE7E5]" />
-            </span>
-
-            <span className="text-[11.5px] font-medium tracking-[0.1em] text-[#8CE6E1] sm:text-[12.5px]">
-              DEEP TECH INNOVATIONS · 24+ PATENTS FILED · POC VALIDATED
-            </span>
-
-            <span className="hidden h-px w-16 bg-gradient-to-r from-[#4DE7E5]/40 to-transparent sm:block" />
-          </div>
-
-          {/* Heading */}
-          <h1
-            className={`${display.className} hero-rise font-semibold leading-[1.06] tracking-[-0.03em] text-[#F4F7FF]`}
-            style={{
-              animationDelay: "0.15s",
-              fontSize: "clamp(38px, min(6.2vw, 9.4vh), 88px)",
-            }}
-          >
-            Solving the critical
-            <br />
-            problems the industry has
-            <br />
-            <span className="text-[#6FDCD8]">
-              stopped trying to solve.
-            </span>
-          </h1>
-
-          {/* Description */}
-          <p
-            className="hero-rise mt-6 max-w-[64ch] text-[16px] leading-[1.75] text-[#94A2B6] sm:text-[17px] lg:mt-7"
-            style={{ animationDelay: "0.28s" }}
-          >
-            STHORAM Labs is a deep-tech innovation company built for the
-            hardest problems in industry. Our first project —{" "}
-            <span className="font-medium text-white/95">
-              Renewable Energy Storage
-            </span>{" "}
-            — begins commercialisation with STHORAM BMS and NexCell BESS. Our
-            second —{" "}
-            <span className="font-medium text-white/95">
-              Life Sciences
-            </span>{" "}
-            — is in development. Indian IP. Global impact.
-          </p>
-
-          {/* Actions */}
-          <div
-            className="hero-rise mt-8 flex flex-wrap items-center gap-3.5 lg:mt-10"
-            style={{ animationDelay: "0.4s" }}
-          >
-            <button
-              onClick={scrollToProjects}
-              className="group inline-flex items-center gap-2.5 rounded-full bg-[#5CE8D8] px-7 py-3.5 text-[14.5px] font-semibold text-[#041014] transition-colors duration-300 hover:bg-[#8CF3E8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4DE7E5]"
-            >
-              Explore Our Projects
-
-              <ArrowRight
-                size={17}
-                strokeWidth={2.2}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </button>
-
-            <button
-              onClick={scrollToProjects}
-              className="rounded-full border border-white/15 px-7 py-3.5 text-[14.5px] font-medium text-white/80 transition-colors duration-300 hover:border-[#4DE7E5]/50 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4DE7E5]"
-            >
-              First Offering: STHORAM BMS
-            </button>
-          </div>
-        </div>
+        {/* Edge vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%)",
+          }}
+        />
       </div>
 
-      {/* ---------- Stats strip ---------- */}
-      <div
-        className="hero-rise relative mt-auto w-full"
-        style={{ animationDelay: "0.6s" }}
-      >
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4DE7E5]/35 to-transparent" />
+      {/* ---------- Content ---------- */}
 
-        <div className="relative border-b border-white/[0.06] bg-[#060B13]/70 backdrop-blur-xl">
-          <div className="mx-auto grid max-w-[1280px] grid-cols-2 md:grid-cols-5 [&>*]:border-white/[0.06] [&>*:not(:last-child)]:border-r max-md:[&>*:nth-child(-n+4)]:border-b">
-            <Stat label="Patents Filed">
-              <CountUp to={24} suffix="+" />
-            </Stat>
+      <div className="relative mx-auto flex w-full max-w-[1500px] flex-col items-center px-5 pb-8 pt-[96px] sm:px-8 sm:pt-[104px] lg:px-10 lg:pt-[108px]">
+        {/* STHORAM */}
+        <h1
+          className={`${display.className} hero-mark w-full select-none text-center font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-transparent`}
+          style={{
+            fontSize: "clamp(56px, min(14.2vw, 21vh), 230px)",
+            backgroundImage:
+              "linear-gradient(180deg, #FFFFFF 35%, #B9C6D6 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+          }}
+        >
+          STHORAM
+        </h1>
 
-            <Stat label="Innovations">
-              <CountUp to={9} />
-            </Stat>
+        {/* DEEP TECH INNOVATIONS, flanked by hairlines */}
+        <div
+          className="hero-rise mt-4 flex w-full items-center justify-center gap-5 sm:mt-5 sm:gap-8"
+          style={{ animationDelay: "0.35s" }}
+        >
+          <span className="rule-l hidden h-px max-w-[220px] flex-1 bg-gradient-to-l from-[#0796E2]/70 to-transparent sm:block" />
 
-            <Stat label="Validated">
-              <Check
-                size={25}
-                strokeWidth={2.6}
-                className="text-[#6CEFE9]"
-              />
+          <h2 className="text-center text-[clamp(17px,2.7vw,40px)] font-semibold uppercase leading-none tracking-[0.2em] text-[#0796E2]">
+            Deep Tech Innovations
+          </h2>
 
-              <span>POC</span>
-            </Stat>
+          <span className="rule-r hidden h-px max-w-[220px] flex-1 bg-gradient-to-r from-[#0796E2]/70 to-transparent sm:block" />
+        </div>
 
-            <Stat label="SoC Equilibrium">
-              <CountUp to={100} decimals={1} suffix="%" />
-            </Stat>
+        {/* Tagline (font size increased) */}
+        <div
+          className="hero-rise mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-[13px] font-medium uppercase leading-none tracking-[0.2em] text-[#A1AAB8] sm:mt-7 sm:gap-x-5 sm:text-[15px] lg:text-[16px] xl:text-[18px]"
+          style={{ animationDelay: "0.5s" }}
+        >
+          <span>STHORAM BMS</span>
+          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
+          <span>STHORAM KAVACH</span>
+          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
+          <span>ATMANIRBHAR BHARAT</span>
+          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
+          <span>Indian IP</span>
+          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
+          <span>Global Impact</span>
+        </div>
 
-            <Stat
-              label="Project Tracks"
-              className="max-md:col-span-2 max-md:!border-r-0"
-            >
-              <CountUp to={2} />
-            </Stat>
-          </div>
+        {/* Stats */}
+        <div
+          className="hero-rise mt-10 grid w-full grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-4 lg:gap-5"
+          style={{ animationDelay: "0.7s" }}
+        >
+          <StatCard label="Patents Filed">
+            <CountUp to={24} />
+            <span className={`${body.className} stat-plus`}>+</span>
+          </StatCard>
+
+          <StatCard label="Validated">
+            <span>POC</span>
+            <Check
+              strokeWidth={2.6}
+              className="h-[28px] w-[28px] text-[#0796E2] sm:h-[34px] sm:w-[34px] lg:h-[38px] lg:w-[38px]"
+            />
+          </StatCard>
+
+          <StatCard label="Innovations">
+            <CountUp to={9} />
+          </StatCard>
+
+          <StatCard label="Verticals">
+            <CountUp to={3} />
+          </StatCard>
         </div>
       </div>
     </section>

@@ -3,7 +3,7 @@
 const navItems = [
   { label: "Projects", id: "projects" },
   { label: "Patents", id: "patents" },
-  { label: "Witness Reports", id: "witness-reports" },
+  { label: "Certification", id: "Certification" },
   { label: "White Papers", id: "white-papers" },
   { label: "Gallery", id: "gallery" },
   { label: "News", id: "news" },
