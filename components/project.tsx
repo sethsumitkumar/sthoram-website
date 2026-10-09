@@ -1,3 +1,4 @@
+
 "use client";
 
 import { CarFront, Zap, ShieldCheck, ArrowUpRight } from "lucide-react";
@@ -42,6 +43,7 @@ const verticals = [
 ];
 
 const SERIF = 'Georgia, "Times New Roman", serif';
+const BRAND_BLUE = "#009FE3";
 
 export default function Verticals() {
   return (
@@ -49,7 +51,7 @@ export default function Verticals() {
       id="verticals"
       className="relative overflow-hidden bg-[#05080F] px-5 py-16 text-white sm:px-8 sm:py-20 lg:px-12 lg:py-28"
     >
-      {/* Faint grid only */}
+      {/* Subtle Background Grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
@@ -61,18 +63,22 @@ export default function Verticals() {
       />
 
       <div className="relative mx-auto max-w-[1400px]">
-        {/* Section heading */}
-        <div className="mb-12 sm:mb-14 lg:mb-16">
+        {/* Centered Section Heading */}
+        <div className="mb-12 text-center sm:mb-14 lg:mb-16">
           <h2
-            className="text-[clamp(30px,4vw,60px)] font-bold leading-[1.1] tracking-[-0.02em] text-white"
+            className="mx-auto text-center text-[clamp(30px,4vw,60px)] font-bold leading-[1.1] tracking-[-0.02em]"
             style={{ fontFamily: SERIF }}
           >
-            Three Distinct Verticals.{" "}
-            <span className="text-[#7C8AA0]">One Technology.</span>
+            <span style={{ color: BRAND_BLUE }}>
+              Three Distinct Verticals.
+            </span>{" "}
+            <span style={{ color: BRAND_BLUE }}>
+              One Technology.
+            </span>
           </h2>
         </div>
 
-        {/* Cards */}
+        {/* Vertical Cards */}
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 xl:gap-6">
           {verticals.map((item, index) => {
             const Icon = item.icon;
@@ -80,9 +86,9 @@ export default function Verticals() {
             return (
               <article
                 key={item.id}
-                className="group relative flex flex-col rounded-xl border border-white/[0.09] bg-white/[0.02] p-7 transition-colors duration-300 hover:border-[#4DE7E5]/40 hover:bg-white/[0.035] sm:p-8"
+                className="group relative flex flex-col rounded-xl border border-white/[0.09] bg-white/[0.02] p-7 transition-colors duration-300 hover:border-[#009FE3]/50 hover:bg-white/[0.035] sm:p-8"
               >
-                {/* Top row: number + category */}
+                {/* Number + Category */}
                 <div className="flex items-center justify-between">
                   <span
                     className="text-[15px] tracking-[0.1em] text-[#5B6A80]"
@@ -97,11 +103,11 @@ export default function Verticals() {
                 </div>
 
                 {/* Icon */}
-                <div className="mt-8 flex h-12 w-12 items-center justify-center rounded-lg border border-white/[0.1] text-[#65D8D5]">
+                <div className="mt-8 flex h-12 w-12 items-center justify-center rounded-lg border border-white/[0.1] text-[#009FE3] transition-colors duration-300 group-hover:border-[#009FE3]/50">
                   <Icon size={22} strokeWidth={1.5} aria-hidden="true" />
                 </div>
 
-                {/* Title */}
+                {/* Card Title */}
                 <h3
                   className="mt-6 text-[26px] font-bold leading-[1.2] tracking-[-0.01em] text-white sm:min-h-[62px] sm:text-[28px]"
                   style={{ fontFamily: SERIF }}
@@ -112,11 +118,11 @@ export default function Verticals() {
                 {/* Divider */}
                 <div className="my-6 h-px w-full bg-white/[0.09]" />
 
-                {/* Feature list */}
+                {/* Feature List */}
                 <ul className="flex flex-1 flex-col gap-4">
                   {item.points.map((point) => (
                     <li key={point} className="flex items-start gap-3.5">
-                      <span className="mt-[11px] h-px w-3 shrink-0 bg-[#65D8D5]" />
+                      <span className="mt-[11px] h-px w-3 shrink-0 bg-[#009FE3]" />
                       <span className="text-[16px] leading-[1.6] text-[#B3BDCC] transition-colors duration-300 group-hover:text-[#D5DBE6]">
                         {point}
                       </span>
@@ -129,7 +135,7 @@ export default function Verticals() {
                   <ArrowUpRight
                     size={18}
                     strokeWidth={1.5}
-                    className="text-[#5B6A80] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#65D8D5]"
+                    className="text-[#5B6A80] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#009FE3]"
                     aria-hidden="true"
                   />
                 </div>

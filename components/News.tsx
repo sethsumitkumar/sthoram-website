@@ -1,9 +1,10 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, CalendarDays, MapPin, Check } from "lucide-react";
 
-const newsItems = [
+const navItems = [
   {
     number: "01",
     date: "5–6 AUGUST 2026",
@@ -24,18 +25,29 @@ const newsItems = [
   },
 ];
 
+const BRAND_BLUE = "#009FE3";
+
 export default function News() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  // Tap/touch anywhere outside a card clears the effect
-  useEffect(() => {
-    const handleOutside = (e: PointerEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest("[data-news-card]")) setActiveId(null);
-    };
-    document.addEventListener("pointerdown", handleOutside);
-    return () => document.removeEventListener("pointerdown", handleOutside);
-  }, []);
+  const goToGallery = () => {
+    const gallery = document.getElementById("gallery");
+
+    if (!gallery) {
+      console.error('News: Gallery section with id="gallery" was not found.');
+      return;
+    }
+
+    const targetPosition =
+      gallery.getBoundingClientRect().top + window.scrollY - 90;
+
+    window.scrollTo({
+      top: Math.max(0, targetPosition),
+      behavior: "smooth",
+    });
+
+    setActiveId(null);
+  };
 
   return (
     <section
@@ -44,10 +56,10 @@ export default function News() {
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-10%] top-[20%] h-[500px] w-[500px] rounded-full bg-[#087F73]/[0.06] blur-[140px]" />
+        <div className="absolute right-[-10%] top-[20%] h-[500px] w-[500px] rounded-full bg-[#009FE3]/[0.06] blur-[140px]" />
 
         <div
-          className="absolute inset-0 opacity-[0.06]"
+          className="absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage: `
               linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
@@ -58,148 +70,145 @@ export default function News() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-[1280px] px-6 lg:px-10">
-        {/* Heading */}
-        <div className="max-w-[760px]">
-          <div className="mb-5 flex items-center gap-3">
-            <span className="h-px w-10 bg-[#4DE7E5]" />
+      <div className="relative mx-auto max-w-[1280px] px-5 sm:px-6 lg:px-10">
+        {/* Centered Heading */}
+        <div className="mx-auto max-w-[1000px] text-center">
+          <div className="mb-5 flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-[#009FE3]" />
 
-            <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#65D8D5]">
+            <span className="font-sans text-[14px] font-bold uppercase tracking-[0.22em] text-[#009FE3] sm:text-[16px]">
               News
             </span>
+
+            <span className="h-px w-10 bg-[#009FE3]" />
           </div>
 
-          <h2 className="font-sans text-[38px] font-semibold leading-[1.1] tracking-[-0.025em] text-white sm:text-[48px] lg:text-[56px]">
+          <h2 className="font-sans text-[42px] font-bold leading-[1.1] tracking-[-0.025em] text-[#009FE3] sm:text-[52px] lg:text-[60px]">
             Latest from the lab.
           </h2>
         </div>
 
-        {/* News cards */}
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
-          {newsItems.map((item) => {
+        {/* News Cards */}
+        <div className="mt-12 grid gap-6 md:mt-14 md:grid-cols-2">
+          {navItems.map((item) => {
             const isActive = activeId === item.number;
 
             return (
               <article
                 key={item.number}
-                data-news-card
+                role="link"
                 tabIndex={0}
-                // Touch / pen: activate on touch
-                onPointerDown={(e) => {
-                  if (e.pointerType !== "mouse") setActiveId(item.number);
+                aria-label={`${item.title} — view Gallery`}
+                onClick={goToGallery}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    goToGallery();
+                  }
                 }}
-                // Mouse: activate on hover
                 onPointerEnter={(e) => {
                   if (e.pointerType === "mouse") setActiveId(item.number);
                 }}
                 onPointerLeave={(e) => {
                   if (e.pointerType === "mouse") setActiveId(null);
                 }}
-                // Keyboard
                 onFocus={() => setActiveId(item.number)}
                 onBlur={() => setActiveId(null)}
-                className={`group relative cursor-pointer select-none overflow-hidden rounded-3xl border-2 p-7 outline-none [-webkit-tap-highlight-color:transparent] touch-manipulation transition-all duration-500 ease-out active:scale-[0.97]
-                  ${
-                    isActive
-                      ? "-translate-y-2 scale-[1.02] border-[#4DE7E5] bg-[#0C1822] shadow-[0_0_0_1px_rgba(77,231,229,0.4),0_20px_60px_-10px_rgba(77,231,229,0.35)]"
-                      : "border-black bg-[#0A111A]/80"
-                  }`}
+                className={`group relative cursor-pointer select-none overflow-hidden rounded-3xl border-2 p-7 outline-none [-webkit-tap-highlight-color:transparent] touch-manipulation transition-all duration-500 ease-out active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[#009FE3] sm:p-9 ${
+                  isActive
+                    ? "-translate-y-1 border-[#009FE3] bg-[#0C1822] shadow-[0_0_0_1px_rgba(0,159,227,0.3),0_20px_60px_-10px_rgba(0,159,227,0.25)]"
+                    : "border-white/10 bg-[#0A111A]/80 hover:border-[#009FE3]/40"
+                }`}
               >
-                {/* Top accent line */}
+                {/* Accent Line */}
                 <span
-                  className={`absolute left-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-[#4DE7E5] to-transparent transition-all duration-500 ${
+                  className={`absolute left-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-[#009FE3] to-transparent transition-all duration-500 ${
                     isActive ? "w-full opacity-100" : "w-0 opacity-0"
                   }`}
                 />
 
-                {/* Glow blob */}
+                {/* Glow */}
                 <span
-                  className={`pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#4DE7E5]/20 blur-[70px] transition-opacity duration-500 ${
+                  className={`pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#009FE3]/20 blur-[70px] transition-opacity duration-500 ${
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 />
 
-                {/* Shine sweep */}
-                <span
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent transition-transform duration-1000 ${
-                    isActive ? "translate-x-full" : "-translate-x-full"
-                  }`}
-                />
-
-                {/* Number + icon */}
+                {/* Number + Icon */}
                 <div className="relative flex items-start justify-between">
                   <span
-                    className={`font-sans text-[12px] font-medium tracking-[0.15em] transition-colors duration-300 ${
-                      isActive ? "text-[#4DE7E5]" : "text-[#4DE7E5]/60"
+                    className={`font-sans text-[14px] font-semibold tracking-[0.15em] transition-colors duration-300 ${
+                      isActive ? "text-[#009FE3]" : "text-[#009FE3]/70"
                     }`}
                   >
                     NEWS {item.number}
                   </span>
 
                   <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500 ${
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-300 ${
                       isActive
-                        ? "rotate-6 border-[#4DE7E5] bg-[#4DE7E5] text-[#05080F]"
-                        : "border-white/10 bg-white/[0.03] text-[#4DE7E5]"
+                        ? "border-[#009FE3] bg-[#009FE3] text-[#05080F]"
+                        : "border-white/10 bg-white/[0.03] text-[#009FE3]"
                     }`}
                   >
                     {isActive ? (
-                      <Check size={19} strokeWidth={2.5} />
+                      <Check size={22} strokeWidth={2.5} />
                     ) : (
-                      <CalendarDays size={19} strokeWidth={1.7} />
+                      <CalendarDays size={22} strokeWidth={1.7} />
                     )}
                   </div>
                 </div>
 
-                {/* Date + location */}
-                <div className="relative mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <span
-                    className={`font-sans text-[11px] font-medium tracking-[0.16em] transition-colors duration-300 ${
-                      isActive ? "text-white" : "text-white/70"
-                    }`}
-                  >
+                {/* Date + Location */}
+                <div className="relative mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+                  <span className="font-sans text-[13px] font-semibold tracking-[0.12em] text-white/80 sm:text-[14px]">
                     {item.date}
                   </span>
 
-                  <span className="flex items-center gap-1.5 text-white/40">
-                    <MapPin size={13} strokeWidth={1.7} />
-                    <span className="font-sans text-[11px] font-medium tracking-[0.16em]">
+                  <span className="flex items-center gap-2 text-white/60">
+                    <MapPin size={16} strokeWidth={1.7} />
+                    <span className="font-sans text-[13px] font-semibold tracking-[0.12em] sm:text-[14px]">
                       {item.location}
                     </span>
                   </span>
                 </div>
 
-                <h3 className="relative mt-5 font-sans text-[21px] font-semibold leading-7 text-white">
+                {/* Title */}
+                <h3 className="relative mt-6 font-sans text-[24px] font-semibold leading-[1.3] text-white sm:text-[28px]">
                   {item.title}
                 </h3>
 
+                {/* Description */}
                 <p
-                  className={`relative mt-4 font-sans text-[14px] leading-6 transition-colors duration-300 ${
-                    isActive ? "text-[#B4C0D0]" : "text-[#8290A5]"
+                  className={`relative mt-5 font-sans text-[16px] leading-7 transition-colors duration-300 sm:text-[17px] sm:leading-8 ${
+                    isActive ? "text-[#CBD5E1]" : "text-[#9AA8BB]"
                   }`}
                 >
                   {item.description}
                 </p>
 
+                {/* Footer */}
                 <div
-                  className={`relative mt-8 flex items-center justify-between border-t pt-5 transition-colors duration-300 ${
-                    isActive ? "border-[#4DE7E5]/30" : "border-white/10"
+                  className={`relative mt-9 flex items-center justify-between gap-3 border-t pt-6 ${
+                    isActive ? "border-[#009FE3]/30" : "border-white/10"
                   }`}
                 >
-                  <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#65D8D5]">
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#009FE3] sm:text-[13px]">
                     {item.status}
                   </span>
 
                   <span
-                    className={`inline-flex items-center gap-1.5 text-[13px] transition-colors ${
-                      isActive ? "text-white" : "text-white/55"
+                    className={`inline-flex items-center gap-2 font-sans text-[15px] font-medium transition-colors sm:text-[16px] ${
+                      isActive ? "text-white" : "text-white/65"
                     }`}
                   >
-                    Read
+                    View Gallery
                     <ArrowUpRight
-                      size={15}
+                      size={19}
                       className={`transition-transform duration-300 ${
-                        isActive ? "translate-x-0.5 -translate-y-0.5" : ""
+                        isActive
+                          ? "translate-x-0.5 -translate-y-0.5"
+                          : ""
                       }`}
                     />
                   </span>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -66,8 +67,10 @@ const patentCategories = [
 ];
 
 const SERIF = 'Georgia, "Times New Roman", serif';
+const BRAND_BLUE = "#009FE3";
 
-/* ---------- Donut chart ---------- */
+/* ---------- Donut Chart ---------- */
+
 function PatentDonut({ activeId }: { activeId: string | null }) {
   const R = 72;
   const C = 2 * Math.PI * R;
@@ -75,12 +78,14 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
   const total = patentCategories.reduce((sum, p) => sum + p.number, 0);
 
   let cursor = 0;
+
   const segments = patentCategories.map((p) => {
     const len = (p.number / total) * C;
     const start = cursor;
     cursor += len;
 
-    const midAngle = ((start + len / 2) / C) * 2 * Math.PI - Math.PI / 2;
+    const midAngle =
+      ((start + len / 2) / C) * 2 * Math.PI - Math.PI / 2;
 
     return {
       ...p,
@@ -93,7 +98,7 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
 
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[300px] 2xl:max-w-[340px]">
-      {/* Soft halo behind the chart */}
+      {/* Soft Halo */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-6 rounded-full bg-[#0796E2]/[0.07] blur-3xl"
@@ -105,7 +110,7 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
         role="img"
         aria-label="Patent split: 8 Logics, 7 BMS Architecture, 5 Product, 4 Utility"
       >
-        {/* Outer and inner hairline rings */}
+        {/* Outer and Inner Rings */}
         <circle
           cx="100"
           cy="100"
@@ -114,6 +119,7 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
           stroke="rgba(255,255,255,0.06)"
           strokeWidth="0.6"
         />
+
         <circle
           cx="100"
           cy="100"
@@ -141,14 +147,15 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
                 strokeDashoffset={s.offset}
                 style={{
                   opacity: dimmed ? 0.3 : 1,
-                  transition: "opacity 400ms ease, stroke-width 400ms ease",
+                  transition:
+                    "opacity 400ms ease, stroke-width 400ms ease",
                 }}
               />
             );
           })}
         </g>
 
-        {/* Numbers on segments */}
+        {/* Numbers on Segments */}
         {segments.map((s) => (
           <text
             key={`t-${s.id}`}
@@ -159,7 +166,11 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
             fontFamily={SERIF}
             fontSize="17"
             fontWeight="700"
-            fill={s.id === "utility" || s.id === "bms-architecture" ? "#05080F" : "#FFFFFF"}
+            fill={
+              s.id === "utility" || s.id === "bms-architecture"
+                ? "#05080F"
+                : "#FFFFFF"
+            }
             style={{
               opacity: activeId !== null && activeId !== s.id ? 0.4 : 1,
               transition: "opacity 400ms ease",
@@ -169,7 +180,7 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
           </text>
         ))}
 
-        {/* Center total */}
+        {/* Center Total */}
         <text
           x="100"
           y="96"
@@ -182,6 +193,7 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
         >
           24
         </text>
+
         <text
           x="100"
           y="116"
@@ -198,7 +210,8 @@ function PatentDonut({ activeId }: { activeId: string | null }) {
   );
 }
 
-/* ---------- Section ---------- */
+/* ---------- Patents Section ---------- */
+
 export default function Patents() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -225,10 +238,8 @@ export default function Patents() {
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Ambient glow */}
         <div className="absolute right-[-10%] top-[20%] h-[500px] w-[500px] rounded-full bg-[#087F73]/[0.06] blur-[140px]" />
 
-        {/* Grid */}
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
@@ -240,21 +251,23 @@ export default function Patents() {
           }}
         />
 
-        {/* Top line */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4DE7E5]/20 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#009FE3]/30 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-[1560px] px-6 lg:px-10">
-        {/* Heading */}
+      <div className="relative mx-auto max-w-[1560px] px-5 sm:px-6 lg:px-10">
+        {/* Centered Blue Heading */}
         <h2
-          className="mx-auto text-center text-[clamp(26px,3.2vw,52px)] font-bold leading-[1.1] tracking-[-0.02em] text-white lg:whitespace-nowrap"
-          style={{ fontFamily: SERIF }}
+          className="mx-auto max-w-[1200px] text-center text-[clamp(30px,3.5vw,60px)] font-bold leading-[1.1] tracking-[-0.02em]"
+          style={{
+            fontFamily: SERIF,
+            color: BRAND_BLUE,
+          }}
         >
           24 Patents. Four Categories. Total IP Protection.
         </h2>
 
-        {/* Chart + cards */}
-        <div className="mt-10 grid items-center gap-12 2xl:grid-cols-[340px_minmax(0,1fr)] 2xl:gap-14">
+        {/* Chart + Cards */}
+        <div className="mt-10 grid items-center gap-10 2xl:grid-cols-[340px_minmax(0,1fr)] 2xl:gap-14">
           <PatentDonut activeId={activeId} />
 
           <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -295,13 +308,13 @@ export default function Patents() {
                       : "0 24px 48px -26px rgba(0,0,0,0.9)",
                   }}
                 >
-                  {/* Thick top bar */}
+                  {/* Category Accent Bar */}
                   <div
                     className="h-[6px] w-full shrink-0"
                     style={{ backgroundColor: patent.accent }}
                   />
 
-                  {/* Light falling from the top bar */}
+                  {/* Accent Light */}
                   <div
                     aria-hidden="true"
                     className={`pointer-events-none absolute inset-x-0 top-[6px] h-36 transition-opacity duration-500 ${
@@ -316,7 +329,10 @@ export default function Patents() {
                     {/* Number */}
                     <div
                       className="text-center text-[68px] font-bold leading-none tracking-[-0.02em]"
-                      style={{ color: patent.accent, fontFamily: SERIF }}
+                      style={{
+                        color: patent.accent,
+                        fontFamily: SERIF,
+                      }}
                     >
                       {patent.number}
                     </div>
@@ -337,7 +353,7 @@ export default function Patents() {
                       }}
                     />
 
-                    {/* Points */}
+                    {/* Patent Details */}
                     <ul className="flex flex-1 flex-col gap-3.5">
                       {patent.points.map((point) => (
                         <li key={point} className="flex items-start gap-3">
@@ -345,9 +361,12 @@ export default function Patents() {
                             className="mt-[9px] h-[5px] w-[5px] shrink-0 rounded-full"
                             style={{ backgroundColor: patent.accent }}
                           />
+
                           <span
                             className={`text-[14.5px] leading-[1.55] transition-colors duration-300 ${
-                              isActive ? "text-[#DCE2EC]" : "text-[#B3BDCC]"
+                              isActive
+                                ? "text-[#DCE2EC]"
+                                : "text-[#B3BDCC]"
                             }`}
                           >
                             {point}
@@ -362,7 +381,7 @@ export default function Patents() {
           </div>
         </div>
 
-        {/* Bottom statement */}
+        {/* Bottom Statement */}
         <p
           className="mt-12 max-w-[1100px] text-[14px] italic leading-[1.7] text-[#6B7A8F] sm:text-[15px]"
           style={{ fontFamily: SERIF }}
