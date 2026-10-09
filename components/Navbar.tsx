@@ -1,6 +1,9 @@
 
 "use client";
 
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
 const navItems = [
   { label: "Projects", id: "projects" },
   { label: "Patents", id: "patents" },
@@ -23,6 +26,8 @@ const sectionAliases: Record<string, string[]> = {
 };
 
 export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const scrollToSection = (id: string) => {
     const ids = sectionAliases[id] ?? [id];
 
@@ -31,9 +36,8 @@ export default function Navbar() {
       .find((element) => element !== null);
 
     if (!section) {
-      console.error(
-        `Navbar: No section found for "${id}". Add the matching ID to its component.`
-      );
+      console.error(`Navbar: No section found for "${id}".`);
+      setMobileMenuOpen(false);
       return;
     }
 
@@ -50,19 +54,19 @@ export default function Navbar() {
       top: Math.max(0, targetPosition),
       behavior: "smooth",
     });
+
+    setMobileMenuOpen(false);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setMobileMenuOpen(false);
   };
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-[#05080F]/95 backdrop-blur-xl">
-      <div className="mx-auto flex h-[74px] max-w-[1280px] items-center justify-between px-6 lg:px-10">
-        {/* Logo */}
+    <header className="fixed inset-x-0 top-0 z-[100] w-full border-b border-white/10 bg-[#05080F]">
+      {/* Header */}
+      <div className="mx-auto flex h-[74px] max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-10">
         <button
           type="button"
           onClick={scrollToTop}
@@ -72,11 +76,11 @@ export default function Navbar() {
           <img
             src="/images/sthoram-logo.png"
             alt="STHORAM Labs"
-            className="block h-auto w-[205px]"
+            className="block h-auto w-[145px] sm:w-[180px] lg:w-[205px]"
           />
         </button>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav
           aria-label="Main navigation"
           className="hidden items-center gap-7 lg:flex"
@@ -86,7 +90,7 @@ export default function Navbar() {
               key={item.id}
               type="button"
               onClick={() => scrollToSection(item.id)}
-              className="whitespace-nowrap font-sans text-[14px] font-medium text-white/65 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4DE7E5]"
+              className="whitespace-nowrap font-sans text-[14px] font-medium text-white/65 transition-colors hover:text-[#00AEEF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]"
             >
               {item.label}
             </button>
@@ -95,12 +99,61 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => scrollToSection("partner")}
-            className="whitespace-nowrap rounded-full border border-[#4DE7E5]/70 px-5 py-2.5 font-sans text-[14px] font-medium text-[#8DEDED] transition-all duration-200 hover:bg-[#4DE7E5]/10"
+            className="whitespace-nowrap rounded-full border border-[#00AEEF]/70 px-5 py-2.5 font-sans text-[14px] font-medium text-[#00AEEF] transition-colors hover:bg-[#00AEEF]/10"
           >
             Partner With Us
           </button>
         </nav>
+
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 text-[#00AEEF] transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF] lg:hidden"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+        >
+          {mobileMenuOpen ? (
+            <X size={25} aria-hidden="true" />
+          ) : (
+            <Menu size={25} aria-hidden="true" />
+          )}
+        </button>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {mobileMenuOpen && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="absolute inset-x-0 top-[74px] z-[110] max-h-[calc(100dvh-74px)] overflow-y-auto overscroll-contain border-t border-[#00AEEF]/20 bg-[#05080F] px-5 pb-6 pt-3 shadow-2xl lg:hidden"
+        >
+          <div className="mx-auto w-full max-w-[600px]">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => scrollToSection(item.id)}
+                className="flex w-full items-center justify-between border-b border-white/10 py-4 text-left font-sans text-[15px] font-medium text-white/80 transition-colors hover:text-[#00AEEF] focus-visible:outline-none focus-visible:text-[#00AEEF]"
+              >
+                <span>{item.label}</span>
+                <span className="text-[#00AEEF]" aria-hidden="true">
+                  →
+                </span>
+              </button>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => scrollToSection("partner")}
+              className="mt-5 w-full rounded-full border border-[#00AEEF]/70 px-5 py-3 font-sans text-[14px] font-semibold text-[#00AEEF] transition-colors hover:bg-[#00AEEF]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]"
+            >
+              Partner With Us
+            </button>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
