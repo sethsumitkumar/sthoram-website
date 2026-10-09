@@ -80,35 +80,30 @@ export default function Verticals() {
             return (
               <article
                 key={item.id}
-                className="group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border border-white/[0.18] bg-white/[0.02] p-7 shadow-[0_20px_40px_-28px_rgba(0,0,0,0.9)] transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-[#4DE7E5]/70 hover:bg-white/[0.04] hover:shadow-[0_30px_60px_-30px_rgba(77,231,229,0.25)] sm:p-8"
+                className="group relative flex flex-col rounded-xl border border-white/[0.09] bg-white/[0.02] p-7 transition-colors duration-300 hover:border-[#4DE7E5]/40 hover:bg-white/[0.035] sm:p-8"
               >
-                {/* Top accent line: grows on hover */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-gradient-to-r from-[#4DE7E5] to-transparent transition-transform duration-500 ease-out group-hover:scale-x-100"
-                />
                 {/* Top row: number + category */}
                 <div className="flex items-center justify-between">
                   <span
-                    className="text-[18px] tracking-[0.1em] text-[#5B6A80]"
+                    className="text-[15px] tracking-[0.1em] text-[#5B6A80]"
                     style={{ fontFamily: SERIF }}
                   >
                     0{index + 1}
                   </span>
 
-                  <span className="text-[14px] font-medium uppercase tracking-[0.22em] text-[#8A97AB]">
+                  <span className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8A97AB]">
                     {item.category}
                   </span>
                 </div>
 
                 {/* Icon */}
-                <div className="mt-8 flex h-14 w-14 items-center justify-center rounded-lg border border-white/[0.18] text-[#65D8D5] transition-colors duration-300 group-hover:border-[#4DE7E5]/60 group-hover:bg-[#4DE7E5]/[0.08]">
-                  <Icon size={26} strokeWidth={1.5} aria-hidden="true" />
+                <div className="mt-8 flex h-12 w-12 items-center justify-center rounded-lg border border-white/[0.1] text-[#65D8D5]">
+                  <Icon size={22} strokeWidth={1.5} aria-hidden="true" />
                 </div>
 
                 {/* Title */}
                 <h3
-                  className="mt-6 text-[30px] font-bold leading-[1.2] tracking-[-0.01em] text-white sm:min-h-[82px] sm:text-[34px]"
+                  className="mt-6 text-[26px] font-bold leading-[1.2] tracking-[-0.01em] text-white sm:min-h-[62px] sm:text-[28px]"
                   style={{ fontFamily: SERIF }}
                 >
                   {item.title}
@@ -121,8 +116,8 @@ export default function Verticals() {
                 <ul className="flex flex-1 flex-col gap-4">
                   {item.points.map((point) => (
                     <li key={point} className="flex items-start gap-3.5">
-                      <span className="mt-[13px] h-px w-3 shrink-0 bg-[#65D8D5]" />
-                      <span className="text-[19px] leading-[1.6] text-[#B3BDCC] transition-colors duration-300 group-hover:text-[#D5DBE6]">
+                      <span className="mt-[11px] h-px w-3 shrink-0 bg-[#65D8D5]" />
+                      <span className="text-[16px] leading-[1.6] text-[#B3BDCC] transition-colors duration-300 group-hover:text-[#D5DBE6]">
                         {point}
                       </span>
                     </li>
