@@ -1,35 +1,204 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
 
 const patentCategories = [
   {
-    number: "8",
-    title: "LOGICS",
-    description:
-      "Balancing algorithms, per-cell SoC/SoH computation, predictive thermal anomaly detection, concurrent zero-current transfer, OTA protocols.",
+    id: "logics",
+    number: 8,
+    title: "Logics",
+    accent: "#0796E2",
+    rgb: "7, 150, 226",
+    points: [
+      "Cell-level electrochemical balancing algorithm",
+      "Real-time individual SoC / SoH computation",
+      "Predictive thermal anomaly detection logic",
+      "Active containment decision and trigger logic",
+      "Zero-current energy transfer logic",
+      "Equilibrium maintenance across all states",
+      "Charge / discharge optimisation logic",
+      "Communication and OTA update protocol",
+    ],
   },
   {
-    number: "7",
-    title: "BMS ARCHITECTURE",
-    description:
-      "Cell-to-cell transfer topology, zero-self-heating auxiliary circuits, per-cell sensor arrays, HV series stacking, modular scalability, fail-safe design.",
+    id: "bms-architecture",
+    number: 7,
+    title: "BMS Architecture",
+    accent: "#FACC15",
+    rgb: "250, 204, 21",
+    points: [
+      "Proprietary cell-to-cell transfer circuit topology",
+      "Auxiliary circuit design — zero BMS self-heating",
+      "Sensor array architecture — per-cell measurement",
+      "High-voltage series stacking architecture",
+      "Modular scalability framework — any kW to HV grid",
+      "Thermal management hardware integration",
+      "Redundancy and fail-safe architecture",
+    ],
   },
   {
-    number: "5",
-    title: "PRODUCT",
-    description:
-      "STHORAM BMS specification, NexCell BESS system design, 4G/LTE/GPS hardware platform, BaaS framework, OEM integration interfaces.",
+    id: "product",
+    number: 5,
+    title: "Product",
+    accent: "#12C879",
+    rgb: "18, 200, 121",
+    points: [
+      "STHORAM BMS — complete product specification",
+      "NexCell BESS — integrated system design",
+      "4G/LTE/GPS connected BMS hardware platform",
+      "BaaS (Battery as a Service) product framework",
+      "OEM integration specification and interface",
+    ],
   },
   {
-    number: "4",
-    title: "UTILITY",
-    description:
-      "Grid-direct connection, solar-BESS integration, EV range extension, defence and remote power applications.",
+    id: "utility",
+    number: 4,
+    title: "Utility",
+    accent: "#9AA5B8",
+    rgb: "154, 165, 184",
+    points: [
+      "Grid-direct connection utility — eliminates transformer",
+      "Solar-BESS integration utility application",
+      "EV range extension utility application",
+      "Defence and remote power utility application",
+    ],
   },
 ];
 
+const SERIF = 'Georgia, "Times New Roman", serif';
+
+/* ---------- Donut chart ---------- */
+function PatentDonut({ activeId }: { activeId: string | null }) {
+  const R = 72;
+  const C = 2 * Math.PI * R;
+  const GAP = 3;
+  const total = patentCategories.reduce((sum, p) => sum + p.number, 0);
+
+  let cursor = 0;
+  const segments = patentCategories.map((p) => {
+    const len = (p.number / total) * C;
+    const start = cursor;
+    cursor += len;
+
+    const midAngle = ((start + len / 2) / C) * 2 * Math.PI - Math.PI / 2;
+
+    return {
+      ...p,
+      dash: Math.max(len - GAP, 0),
+      offset: -(start + GAP / 2),
+      lx: 100 + R * Math.cos(midAngle),
+      ly: 100 + R * Math.sin(midAngle),
+    };
+  });
+
+  return (
+    <div className="relative mx-auto aspect-square w-full max-w-[300px] 2xl:max-w-[340px]">
+      {/* Soft halo behind the chart */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-6 rounded-full bg-[#0796E2]/[0.07] blur-3xl"
+      />
+
+      <svg
+        viewBox="0 0 200 200"
+        className="relative h-full w-full"
+        role="img"
+        aria-label="Patent split: 8 Logics, 7 BMS Architecture, 5 Product, 4 Utility"
+      >
+        {/* Outer and inner hairline rings */}
+        <circle
+          cx="100"
+          cy="100"
+          r="96"
+          fill="none"
+          stroke="rgba(255,255,255,0.06)"
+          strokeWidth="0.6"
+        />
+        <circle
+          cx="100"
+          cy="100"
+          r="48"
+          fill="none"
+          stroke="rgba(255,255,255,0.06)"
+          strokeWidth="0.6"
+        />
+
+        {/* Segments */}
+        <g transform="rotate(-90 100 100)">
+          {segments.map((s) => {
+            const dimmed = activeId !== null && activeId !== s.id;
+
+            return (
+              <circle
+                key={s.id}
+                cx="100"
+                cy="100"
+                r={R}
+                fill="none"
+                stroke={s.accent}
+                strokeWidth={activeId === s.id ? 32 : 30}
+                strokeDasharray={`${s.dash} ${C - s.dash}`}
+                strokeDashoffset={s.offset}
+                style={{
+                  opacity: dimmed ? 0.3 : 1,
+                  transition: "opacity 400ms ease, stroke-width 400ms ease",
+                }}
+              />
+            );
+          })}
+        </g>
+
+        {/* Numbers on segments */}
+        {segments.map((s) => (
+          <text
+            key={`t-${s.id}`}
+            x={s.lx}
+            y={s.ly}
+            textAnchor="middle"
+            dominantBaseline="central"
+            fontFamily={SERIF}
+            fontSize="17"
+            fontWeight="700"
+            fill={s.id === "utility" || s.id === "bms-architecture" ? "#05080F" : "#FFFFFF"}
+            style={{
+              opacity: activeId !== null && activeId !== s.id ? 0.4 : 1,
+              transition: "opacity 400ms ease",
+            }}
+          >
+            {s.number}
+          </text>
+        ))}
+
+        {/* Center total */}
+        <text
+          x="100"
+          y="96"
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily={SERIF}
+          fontSize="30"
+          fontWeight="700"
+          fill="#FFFFFF"
+        >
+          24
+        </text>
+        <text
+          x="100"
+          y="116"
+          textAnchor="middle"
+          fontSize="6.5"
+          fontWeight="600"
+          letterSpacing="2.2"
+          fill="#7C8AA0"
+        >
+          PATENTS
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* ---------- Section ---------- */
 export default function Patents() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -52,7 +221,7 @@ export default function Patents() {
   return (
     <section
       id="patents"
-      className="relative overflow-hidden bg-[#05080F] py-24 sm:py-28 lg:py-32"
+      className="relative overflow-hidden bg-[#05080F] pb-14 pt-28 sm:pb-16 sm:pt-28 lg:pb-20 lg:pt-32"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0">
@@ -75,140 +244,132 @@ export default function Patents() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#4DE7E5]/20 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-[1280px] px-6 lg:px-10">
+      <div className="relative mx-auto max-w-[1560px] px-6 lg:px-10">
         {/* Heading */}
-        <div className="max-w-[760px]">
-          <div className="mb-5 flex items-center gap-3">
-            <span className="h-px w-10 bg-[#4DE7E5]" />
+        <h2
+          className="mx-auto text-center text-[clamp(26px,3.2vw,52px)] font-bold leading-[1.1] tracking-[-0.02em] text-white lg:whitespace-nowrap"
+          style={{ fontFamily: SERIF }}
+        >
+          24 Patents. Four Categories. Total IP Protection.
+        </h2>
 
-            <span className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-[#65D8D5]">
-              Patents
-            </span>
-          </div>
+        {/* Chart + cards */}
+        <div className="mt-10 grid items-center gap-12 2xl:grid-cols-[340px_minmax(0,1fr)] 2xl:gap-14">
+          <PatentDonut activeId={activeId} />
 
-          <h2 className="font-sans text-[38px] font-semibold leading-[1.08] tracking-[-0.025em] text-white sm:text-[48px] lg:text-[56px]">
-            24 patents. Four categories. Total
-            <br />
-            IP protection.
-          </h2>
-        </div>
+          <div className="grid items-stretch gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {patentCategories.map((patent) => {
+              const isActive = activeId === patent.id;
 
-        {/* Patent categories */}
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {patentCategories.map((patent) => {
-            const isActive = activeId === patent.number;
-
-            return (
-              <article
-                key={patent.title}
-                data-patent-card
-                tabIndex={0}
-                onPointerDown={(e) => {
-                  if (e.pointerType !== "mouse") {
-                    setActiveId(patent.number);
-                  }
-                }}
-                onPointerEnter={(e) => {
-                  if (e.pointerType === "mouse") {
-                    setActiveId(patent.number);
-                  }
-                }}
-                onPointerLeave={(e) => {
-                  if (e.pointerType === "mouse") {
-                    setActiveId(null);
-                  }
-                }}
-                onFocus={() => setActiveId(patent.number)}
-                onBlur={() => setActiveId(null)}
-                className={`group relative cursor-pointer select-none overflow-hidden rounded-2xl border outline-none [-webkit-tap-highlight-color:transparent] touch-manipulation transition-all duration-500 ease-out active:scale-[0.98]
-                  ${
-                    isActive
-                      ? "border-[#4DE7E5]/70 bg-[#0B1721] -translate-y-1 shadow-[0_20px_50px_-20px_rgba(77,231,229,0.35)]"
-                      : "border-[#173040] bg-[#0A111A]/80 hover:border-[#244454]"
+              return (
+                <article
+                  key={patent.id}
+                  data-patent-card
+                  tabIndex={0}
+                  onPointerDown={(e) => {
+                    if (e.pointerType !== "mouse") {
+                      setActiveId(patent.id);
+                    }
+                  }}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType === "mouse") {
+                      setActiveId(patent.id);
+                    }
+                  }}
+                  onPointerLeave={(e) => {
+                    if (e.pointerType === "mouse") {
+                      setActiveId(null);
+                    }
+                  }}
+                  onFocus={() => setActiveId(patent.id)}
+                  onBlur={() => setActiveId(null)}
+                  className={`group relative flex cursor-pointer select-none flex-col overflow-hidden bg-gradient-to-b from-[#0C1322] to-[#070B14] outline-none [-webkit-tap-highlight-color:transparent] touch-manipulation transition-all duration-500 ease-out ${
+                    isActive ? "-translate-y-1.5" : ""
                   }`}
-              >
-                {/* Top glow */}
-                <span
-                  className={`pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#4DE7E5] to-transparent transition-opacity duration-500 ${
-                    isActive ? "opacity-100" : "opacity-50"
-                  }`}
-                />
-
-                {/* Corner glow */}
-                <span
-                  className={`pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[#4DE7E5]/15 blur-[70px] transition-opacity duration-500 ${
-                    isActive ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-
-                {/* Shine */}
-                <span
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.035] to-transparent transition-transform duration-1000 ${
-                    isActive
-                      ? "translate-x-full"
-                      : "-translate-x-full"
-                  }`}
-                />
-
-                <div className="relative flex min-h-[202px] flex-col px-6 py-7 text-center">
-                  {/* Number */}
+                  style={{
+                    border: `1.5px solid rgba(${patent.rgb}, ${
+                      isActive ? 1 : 0.7
+                    })`,
+                    boxShadow: isActive
+                      ? `0 30px 60px -28px rgba(${patent.rgb},0.45), 0 20px 40px -24px rgba(0,0,0,0.9)`
+                      : "0 24px 48px -26px rgba(0,0,0,0.9)",
+                  }}
+                >
+                  {/* Thick top bar */}
                   <div
-                    className={`font-sans text-[34px] font-medium leading-none tracking-[-0.03em] transition-all duration-500 ${
-                      isActive
-                        ? "text-[#62E8E7] drop-shadow-[0_0_14px_rgba(77,231,229,0.35)]"
-                        : "text-[#4DE7E5]"
-                    }`}
-                  >
-                    {patent.number}
-                  </div>
+                    className="h-[6px] w-full shrink-0"
+                    style={{ backgroundColor: patent.accent }}
+                  />
 
-                  {/* Category */}
+                  {/* Light falling from the top bar */}
                   <div
-                    className={`mt-3 font-sans text-[10px] font-semibold uppercase tracking-[0.22em] transition-colors duration-300 ${
-                      isActive
-                        ? "text-[#65D8D5]"
-                        : "text-[#55C9C5]"
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute inset-x-0 top-[6px] h-36 transition-opacity duration-500 ${
+                      isActive ? "opacity-100" : "opacity-60"
                     }`}
-                  >
-                    {patent.title}
-                  </div>
+                    style={{
+                      background: `linear-gradient(to bottom, rgba(${patent.rgb},0.11), transparent)`,
+                    }}
+                  />
 
-                  {/* Description */}
-                  <p
-                    className={`mx-auto mt-3 max-w-[220px] font-sans text-[12px] leading-[1.55] transition-colors duration-300 ${
-                      isActive
-                        ? "text-[#AEBBCA]"
-                        : "text-[#77869B]"
-                    }`}
-                  >
-                    {patent.description}
-                  </p>
+                  <div className="relative flex flex-1 flex-col px-6 pb-8 pt-7 lg:px-7">
+                    {/* Number */}
+                    <div
+                      className="text-center text-[68px] font-bold leading-none tracking-[-0.02em]"
+                      style={{ color: patent.accent, fontFamily: SERIF }}
+                    >
+                      {patent.number}
+                    </div>
 
-                  {/* Bottom indicator */}
-                  <div className="mt-auto flex justify-center pt-5">
-                    <span
-                      className={`h-px transition-all duration-500 ${
-                        isActive
-                          ? "w-12 bg-[#4DE7E5]"
-                          : "w-6 bg-[#4DE7E5]/30"
-                      }`}
+                    {/* Category */}
+                    <div
+                      className="mt-4 text-center text-[14px] font-bold uppercase tracking-[0.28em]"
+                      style={{ color: patent.accent }}
+                    >
+                      {patent.title}
+                    </div>
+
+                    {/* Divider */}
+                    <div
+                      className="mx-auto my-6 h-[2px] w-full"
+                      style={{
+                        background: `linear-gradient(90deg, transparent, rgba(${patent.rgb},0.9), transparent)`,
+                      }}
                     />
+
+                    {/* Points */}
+                    <ul className="flex flex-1 flex-col gap-3.5">
+                      {patent.points.map((point) => (
+                        <li key={point} className="flex items-start gap-3">
+                          <span
+                            className="mt-[9px] h-[5px] w-[5px] shrink-0 rounded-full"
+                            style={{ backgroundColor: patent.accent }}
+                          />
+                          <span
+                            className={`text-[14.5px] leading-[1.55] transition-colors duration-300 ${
+                              isActive ? "text-[#DCE2EC]" : "text-[#B3BDCC]"
+                            }`}
+                          >
+                            {point}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-              </article>
-            );
-          })}
+                </article>
+              );
+            })}
+          </div>
         </div>
 
         {/* Bottom statement */}
-        <div className="mt-6 px-4 text-center">
-          <p className="mx-auto max-w-[1120px] font-sans text-[11px] leading-[1.6] text-[#68788D] sm:text-[12px]">
-            All 24 applications cover inventions that endure across battery
-            chemistries · India jurisdiction, PCT pathway · 19 assigned to SPV
-            (BESS/Grid), 5 retained by founders · Full patent numbers and claims
-            available under NDA
-          </p>
-        </div>
+        <p
+          className="mt-12 max-w-[1100px] text-[14px] italic leading-[1.7] text-[#6B7A8F] sm:text-[15px]"
+          style={{ fontFamily: SERIF }}
+        >
+          All 24 applications cover inventions that endure across battery
+          chemistries. Full patent numbers and claims available under NDA.
+        </p>
       </div>
     </section>
   );
