@@ -1,7 +1,5 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
-
 const siteLinks = [
   { label: "Projects", id: "projects" },
   { label: "Patents", id: "patents" },
@@ -38,60 +36,6 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-[#05080F]">
-      {/* Top CTA area */}
-      <section
-        id="partner"
-        className="relative overflow-hidden border-t border-white/[0.07] py-24 sm:py-28 lg:py-32"
-      >
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-1/2 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#087F73]/[0.08] blur-[150px]" />
-
-          <div className="absolute left-1/2 top-0 h-px w-[70%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#4DE7E5]/20 to-transparent" />
-        </div>
-
-        <div className="relative mx-auto max-w-[1100px] px-6 text-center lg:px-10">
-          <div className="mx-auto max-w-[760px]">
-            <span className="font-sans text-[10px] font-medium uppercase tracking-[0.28em] text-[#67D9D5]">
-              Partner With Us
-            </span>
-
-            <h2 className="mt-6 font-sans text-[38px] font-semibold leading-[1.08] tracking-[-0.035em] text-[#F2F6FF] sm:text-[48px] lg:text-[56px]">
-              Building technology for problems
-              <br />
-              <span className="text-white/50">that matter.</span>
-            </h2>
-
-            <p className="mx-auto mt-6 max-w-[620px] font-sans text-[15px] leading-7 text-[#7F8DA2]">
-              STHORAM Labs is building deep-tech solutions for critical
-              industrial challenges, beginning with renewable energy storage
-              and extending into life sciences.
-            </p>
-
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-              <button
-                type="button"
-                className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#55DFFF] to-[#5CE8D2] px-7 py-3.5 font-sans text-[14px] font-semibold text-[#061116] shadow-[0_0_35px_rgba(77,231,229,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_50px_rgba(77,231,229,0.28)]"
-              >
-                Schedule a Demonstration
-
-                <ArrowUpRight
-                  size={17}
-                  strokeWidth={1.8}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </button>
-
-              <button
-                type="button"
-                className="rounded-full border border-white/10 px-7 py-3.5 font-sans text-[14px] text-white/65 transition-all duration-300 hover:border-[#4DE7E5]/30 hover:text-white"
-              >
-                Investor Enquiry
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Main footer */}
       <div className="border-t border-white/[0.07]">
         <div className="mx-auto max-w-[1280px] px-6 py-16 lg:px-10 lg:py-20">

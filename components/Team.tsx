@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
@@ -19,8 +18,8 @@ const teamMembers = [
       "30+ years building and scaling ventures. MSc Minerals Engineering. Commercial architect of the capital roadmap — from seed to USD 750M programme to IPO.",
   },
   {
-    initials: "AS",
-    name: "Aseem Singh",
+    initials: "VS",
+    name: "Vishwas Tiwari",
     role: "AUTHOR · THOUGHT LEADER · CO-FOUNDER",
     description:
       "Serial entrepreneur and success story of distribution and marketing. Pan-India network and a solid management pillar of the company.",
@@ -59,7 +58,7 @@ export default function Team() {
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-12 bg-gradient-to-r from-transparent to-[#009FE3]" />
 
-            <span className="font-sans text-[14px] font-bold uppercase tracking-[0.25em] text-[#009FE3] sm:text-[16px]">
+            <span className="font-sans text-[15px] font-bold uppercase tracking-[0.25em] text-[#009FE3] sm:text-[17px]">
               Team
             </span>
 
@@ -84,14 +83,14 @@ export default function Team() {
               <div className="pointer-events-none absolute left-1/2 top-[-100px] h-[260px] w-[260px] -translate-x-1/2 rounded-full bg-[#009FE3]/[0.045] blur-[80px] transition-all duration-500 group-hover:bg-[#009FE3]/[0.09]" />
 
               {/* Card Number */}
-              <span className="absolute right-7 top-7 font-sans text-[12px] tracking-[0.2em] text-white/35">
+              <span className="absolute right-7 top-7 font-sans text-[14px] tracking-[0.2em] text-white/45">
                 0{index + 1}
               </span>
 
               {/* Initials */}
               <div className="relative flex justify-center">
-                <div className="relative flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#009FE3]/40 bg-[#009FE3]/15 transition-all duration-300 group-hover:border-[#009FE3]/70 group-hover:bg-[#009FE3]/25">
-                  <span className="font-sans text-[30px] font-bold tracking-[-0.03em] text-[#42BFFF]">
+                <div className="relative flex h-[110px] w-[110px] items-center justify-center rounded-full border border-[#009FE3]/40 bg-[#009FE3]/15 transition-all duration-300 group-hover:border-[#009FE3]/70 group-hover:bg-[#009FE3]/25">
+                  <span className="font-sans text-[34px] font-bold tracking-[-0.03em] text-[#42BFFF]">
                     {member.initials}
                   </span>
 
@@ -101,11 +100,11 @@ export default function Team() {
 
               {/* Name and Role */}
               <div className="relative mt-8 text-center">
-                <h3 className="font-sans text-[24px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[26px]">
+                <h3 className="font-sans text-[27px] font-bold leading-tight tracking-[-0.02em] text-white sm:text-[29px]">
                   {member.name}
                 </h3>
 
-                <p className="mx-auto mt-4 max-w-[320px] font-sans text-[12px] font-semibold uppercase leading-6 tracking-[0.12em] text-[#42BFFF] sm:text-[13px]">
+                <p className="mx-auto mt-4 max-w-[340px] font-sans text-[14px] font-semibold uppercase leading-7 tracking-[0.10em] text-[#42BFFF] sm:text-[15px]">
                   {member.role}
                 </p>
               </div>
@@ -114,18 +113,18 @@ export default function Team() {
               <div className="relative mx-auto mt-7 h-px w-[80%] bg-gradient-to-r from-transparent via-[#009FE3]/30 to-transparent" />
 
               {/* Description */}
-              <p className="relative mt-7 flex-1 text-center font-sans text-[16px] leading-[1.85] text-[#C2CCDA] sm:text-[17px]">
+              <p className="relative mt-7 flex-1 text-center font-sans text-[18px] leading-[1.9] text-[#D0D9E5] sm:text-[19px]">
                 {member.description}
               </p>
 
               {/* Card Footer */}
               <div className="relative mt-8 flex items-center justify-between border-t border-white/[0.10] pt-5">
-                <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-white/45">
+                <span className="font-sans text-[13px] font-semibold uppercase tracking-[0.18em] text-white/55">
                   STHORAM LABS
                 </span>
 
-                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/55 transition-all duration-300 group-hover:border-[#009FE3]/50 group-hover:text-[#42BFFF]">
-                  <ArrowUpRight size={18} strokeWidth={1.7} />
+                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/55 transition-all duration-300 group-hover:border-[#009FE3]/50 group-hover:text-[#42BFFF]">
+                  <ArrowUpRight size={20} strokeWidth={1.7} />
                 </span>
               </div>
 

@@ -22,7 +22,6 @@ const sectionAliases: Record<string, string[]> = {
   gallery: ["gallery"],
   news: ["news"],
   team: ["team"],
-  partner: ["partner"],
 };
 
 export default function Navbar() {
@@ -95,14 +94,6 @@ export default function Navbar() {
               {item.label}
             </button>
           ))}
-
-          <button
-            type="button"
-            onClick={() => scrollToSection("partner")}
-            className="whitespace-nowrap rounded-full border border-[#00AEEF]/70 px-5 py-2.5 font-sans text-[14px] font-medium text-[#00AEEF] transition-colors hover:bg-[#00AEEF]/10"
-          >
-            Partner With Us
-          </button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -143,14 +134,6 @@ export default function Navbar() {
                 </span>
               </button>
             ))}
-
-            <button
-              type="button"
-              onClick={() => scrollToSection("partner")}
-              className="mt-5 w-full rounded-full border border-[#00AEEF]/70 px-5 py-3 font-sans text-[14px] font-semibold text-[#00AEEF] transition-colors hover:bg-[#00AEEF]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]"
-            >
-              Partner With Us
-            </button>
           </div>
         </nav>
       )}
