@@ -28,6 +28,14 @@ const BG_URL = 'url("/images/logo/Renewable%20Energy%20City%20at%20Sunrise.png")
 // Change this if your next section uses a slightly different dark colour.
 const NEXT_BG = "#050810";
 
+const brandKeywords = [
+  "STHORAM BMS",
+  "STHORAM KAVACH",
+  "ATMANIRBHAR BHARAT",
+  "INDIAN IP",
+  "GLOBAL IMPACT",
+];
+
 function CountUp({
   to,
   duration = 1500,
@@ -254,6 +262,15 @@ export default function Hero() {
           100% { transform: translateX(420%) skewX(-20deg); }
         }
 
+        @keyframes sthoram-marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+
+        .marquee-track {
+          animation: sthoram-marquee 24s linear infinite;
+        }
+
         .sthoram-enter {
           animation: sthoram-enter .8s cubic-bezier(.2,.7,.2,1) both;
         }
@@ -335,6 +352,17 @@ export default function Hero() {
             animation: none;
           }
 
+          .marquee-track {
+            animation: none;
+            width: auto;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+
+          .marquee-dup {
+            display: none;
+          }
+
           .stat-card,
           .stat-bg,
           .stat-number,
@@ -347,6 +375,26 @@ export default function Hero() {
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0 -z-20">
+        {/* Mobile: soft ambient glow + fine dot texture behind the text */}
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{
+            background:
+              "radial-gradient(120% 55% at 50% 0%, rgba(44,151,255,.26) 0%, rgba(44,151,255,0) 62%), radial-gradient(70% 38% at 100% 34%, rgba(0,174,239,.16) 0%, rgba(0,174,239,0) 70%), radial-gradient(60% 30% at 0% 55%, rgba(101,83,232,.10) 0%, rgba(101,83,232,0) 70%), linear-gradient(180deg, #F5FAFF 0%, #E7F2FA 50%, #DCEBF7 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(16,35,66,.10) 1px, transparent 1px)",
+            backgroundSize: "18px 18px",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, #000 0%, transparent 45%)",
+            maskImage: "linear-gradient(to bottom, #000 0%, transparent 45%)",
+          }}
+        />
+
         {/* Tablet/Desktop: full-cover background (same as before) */}
         <div
           className="absolute inset-0 hidden bg-cover bg-center bg-no-repeat sm:block"
@@ -362,7 +410,7 @@ export default function Hero() {
 
       {/* Smooth fade from the hero into the dark section below (mobile) */}
       <div
-        className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-[150px] sm:hidden"
+        className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-[240px] sm:hidden"
         style={{
           background: `linear-gradient(to bottom, rgba(11,36,68,0) 0%, rgba(11,36,68,0.55) 45%, ${NEXT_BG} 100%)`,
         }}
@@ -377,11 +425,11 @@ export default function Hero() {
       />
 
       {/* Hero content */}
-      <div className="mx-auto flex w-full max-w-[1500px] flex-col items-center px-3 pb-[100px] pt-[100px] sm:px-6 sm:pb-[120px] sm:pt-[112px] md:px-8 md:pt-[118px] lg:px-10 lg:pb-[140px] lg:pt-[126px] xl:px-12">
+      <div className="mx-auto flex w-full max-w-[1500px] flex-col items-center px-3 pb-[100px] pt-[112px] sm:px-6 sm:pb-[120px] sm:pt-[112px] md:px-8 md:pt-[118px] lg:px-10 lg:pb-[140px] lg:pt-[126px] xl:px-12">
         {/* Main title */}
         <div className="sthoram-title w-full text-center">
           <h1
-            className={`${display.className} select-none text-[clamp(52px,13vw,64px)] sm:text-[clamp(48px,8.5vw,124px)] font-bold uppercase leading-[0.95] tracking-[-0.065em] text-[#07182F]`}
+            className={`${display.className} select-none text-[clamp(54px,14.5vw,68px)] sm:text-[clamp(48px,8.5vw,124px)] [text-shadow:0_2px_28px_rgba(255,255,255,0.85)] sm:[text-shadow:none] font-bold uppercase leading-[0.95] tracking-[-0.065em] text-[#07182F]`}
           >
             STHO<span className="text-[#087FE8]">R</span>AM
           </h1>
@@ -392,18 +440,52 @@ export default function Hero() {
           className="sthoram-enter mt-2 flex w-full items-center justify-center gap-2.5 sm:mt-3 sm:gap-4"
           style={{ animationDelay: "0.12s" }}
         >
-          <span className="hidden h-px max-w-[90px] flex-1 bg-[#0B3155]/45 sm:block md:max-w-[120px]" />
+          <span className="h-px max-w-[34px] flex-1 bg-gradient-to-r from-transparent to-[#0B3155]/50 sm:max-w-[90px] sm:bg-[#0B3155]/45 md:max-w-[120px]" />
 
           <h2 className="whitespace-nowrap text-center text-[clamp(12px,1.9vw,26px)] font-bold uppercase leading-tight tracking-[0.10em] text-[#102B4E] sm:tracking-[0.18em]">
             Deep Tech Innovations
           </h2>
 
-          <span className="hidden h-px max-w-[90px] flex-1 bg-[#0B3155]/45 sm:block md:max-w-[120px]" />
+          <span className="h-px max-w-[34px] flex-1 bg-gradient-to-r from-transparent to-[#0B3155]/50 sm:max-w-[90px] sm:bg-[#0B3155]/45 md:max-w-[120px]" />
+        </div>
+
+        {/* Mobile: full-width scrolling keyword bar */}
+        <div
+          className="sthoram-enter relative z-10 mt-5 w-[calc(100%+1.5rem)] max-w-none overflow-hidden border-y border-white/15 sm:hidden"
+          style={{
+            background:
+              "linear-gradient(90deg, #0C2850 0%, #06142B 50%, #0C2850 100%)",
+            boxShadow:
+              "0 14px 32px rgba(4,18,43,.38), inset 0 1px 0 rgba(255,255,255,.14)",
+            animationDelay: "0.24s",
+          }}
+        >
+          <div className="marquee-track flex w-max items-center py-3">
+            {[0, 1].map((copy) => (
+              <div
+                key={copy}
+                aria-hidden={copy === 1}
+                className={`flex shrink-0 items-center ${copy === 1 ? "marquee-dup" : ""}`}
+              >
+                {brandKeywords.map((keyword) => (
+                  <div key={keyword} className="flex items-center">
+                    <span className="whitespace-nowrap px-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
+                      {keyword}
+                    </span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <span className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-[#06142B] to-transparent" />
+          <span className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#06142B] to-transparent" />
         </div>
 
         {/* Brand keywords: premium dark glass strip with gradient border */}
         <div
-          className="sthoram-enter mt-4 max-w-full rounded-2xl bg-gradient-to-r from-[#2C97FF]/80 via-white/30 to-[#2C97FF]/80 p-px shadow-[0_16px_44px_rgba(4,18,43,0.5),0_0_30px_rgba(44,151,255,0.18)] sm:mt-5 sm:rounded-full"
+          className="sthoram-enter mt-4 hidden max-w-full rounded-2xl bg-gradient-to-r from-[#2C97FF]/80 via-white/30 to-[#2C97FF]/80 p-px shadow-[0_16px_44px_rgba(4,18,43,0.5),0_0_30px_rgba(44,151,255,0.18)] sm:mt-5 sm:block sm:rounded-full"
           style={{ animationDelay: "0.24s" }}
         >
           <div
@@ -439,17 +521,24 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Mobile: full image shown below the text (no text over it) */}
+        {/* Mobile: full-bleed image, feathered into the background top and bottom */}
         <div
           role="img"
           aria-label="Renewable energy city at sunrise"
-          className="sthoram-enter relative mt-5 aspect-[3/2] w-full overflow-hidden rounded-[22px] bg-cover bg-center bg-no-repeat shadow-[0_18px_40px_rgba(26,63,100,0.22)] ring-1 ring-white/70 sm:hidden"
-          style={{ backgroundImage: BG_URL, animationDelay: "0.3s" }}
+          className="sthoram-enter pointer-events-none relative -mt-8 aspect-[3/2] w-[calc(100%+1.5rem)] max-w-none bg-cover bg-center bg-no-repeat sm:hidden"
+          style={{
+            backgroundImage: BG_URL,
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 24%, #000 80%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 24%, #000 80%, transparent 100%)",
+            animationDelay: "0.3s",
+          }}
         />
 
-        {/* Statistics: on mobile they float over the bottom edge of the image */}
+        {/* Statistics: on mobile they sit below the image, separate from it */}
         <div
-          className="sthoram-enter relative z-10 -mt-12 grid w-full grid-cols-2 gap-2.5 sm:mt-[68px] sm:gap-4 md:mt-[88px] xl:grid-cols-4 md:gap-4 lg:mt-[105px] lg:gap-5 xl:mt-[112px]"
+          className="sthoram-enter relative z-10 mt-2 grid w-full grid-cols-2 gap-2.5 sm:mt-[68px] sm:gap-4 md:mt-[88px] xl:grid-cols-4 md:gap-4 lg:mt-[105px] lg:gap-5 xl:mt-[112px]"
           style={{ animationDelay: "0.36s" }}
         >
           {stats.map((stat) => (
