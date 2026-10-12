@@ -347,21 +347,6 @@ export default function Hero() {
 
       {/* Background */}
       <div className="pointer-events-none absolute inset-0 -z-20">
-        {/* Mobile: full image in natural ratio, fading softly into the section colour */}
-        <div className="absolute inset-x-0 top-0 aspect-[3/2] sm:hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: BG_URL }}
-          />
-          <div
-            className="absolute inset-x-0 -bottom-px top-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(231,242,250,0) 0%, rgba(231,242,250,0) 50%, #E7F2FA 100%)",
-            }}
-          />
-        </div>
-
         {/* Tablet/Desktop: full-cover background (same as before) */}
         <div
           className="absolute inset-0 hidden bg-cover bg-center bg-no-repeat sm:block"
@@ -396,7 +381,7 @@ export default function Hero() {
         {/* Main title */}
         <div className="sthoram-title w-full text-center">
           <h1
-            className={`${display.className} select-none text-[clamp(48px,8.5vw,124px)] font-bold uppercase leading-[0.95] tracking-[-0.065em] text-[#07182F]`}
+            className={`${display.className} select-none text-[clamp(52px,13vw,64px)] sm:text-[clamp(48px,8.5vw,124px)] font-bold uppercase leading-[0.95] tracking-[-0.065em] text-[#07182F]`}
           >
             STHO<span className="text-[#087FE8]">R</span>AM
           </h1>
@@ -409,7 +394,7 @@ export default function Hero() {
         >
           <span className="hidden h-px max-w-[90px] flex-1 bg-[#0B3155]/45 sm:block md:max-w-[120px]" />
 
-          <h2 className="whitespace-nowrap text-center text-[clamp(11px,1.9vw,26px)] font-bold uppercase leading-tight tracking-[0.10em] text-[#102B4E] sm:tracking-[0.18em]">
+          <h2 className="whitespace-nowrap text-center text-[clamp(12px,1.9vw,26px)] font-bold uppercase leading-tight tracking-[0.10em] text-[#102B4E] sm:tracking-[0.18em]">
             Deep Tech Innovations
           </h2>
 
@@ -422,7 +407,7 @@ export default function Hero() {
           style={{ animationDelay: "0.24s" }}
         >
           <div
-            className="relative flex flex-wrap items-center justify-center gap-x-3 gap-y-2 overflow-hidden rounded-[15px] px-5 py-3 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] text-white sm:gap-x-5 sm:rounded-full sm:px-10 sm:py-3.5 sm:text-[12px] sm:tracking-[0.16em] md:gap-x-6 md:text-[13px] lg:text-[15px]"
+            className="relative flex flex-col items-center justify-center gap-y-2 overflow-hidden sm:flex-row sm:flex-wrap rounded-[15px] px-5 py-3 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] text-white sm:gap-x-5 sm:rounded-full sm:px-10 sm:py-3.5 sm:text-[12px] sm:tracking-[0.16em] md:gap-x-6 md:text-[13px] lg:text-[15px]"
             style={{
               background:
                 "linear-gradient(135deg, #0C2850 0%, #06142B 50%, #0A1F42 100%)",
@@ -436,21 +421,35 @@ export default function Hero() {
             {/* slow light sweep */}
             <span className="strip-shine pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
 
-            <span className="relative">STHORAM BMS</span>
-            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
-            <span className="relative">STHORAM KAVACH</span>
-            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
-            <span className="relative">ATMANIRBHAR BHARAT</span>
-            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
-            <span className="relative">INDIAN IP</span>
-            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
-            <span className="relative">GLOBAL IMPACT</span>
+            <div className="flex items-center justify-center gap-x-3 sm:contents">
+              <span className="relative">STHORAM BMS</span>
+              <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+              <span className="relative">STHORAM KAVACH</span>
+            </div>
+            <span className="relative hidden h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)] sm:block" />
+            <div className="flex items-center justify-center gap-x-3 sm:contents">
+              <span className="relative">ATMANIRBHAR BHARAT</span>
+              <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+              <span className="relative">INDIAN IP</span>
+            </div>
+            <span className="relative hidden h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)] sm:block" />
+            <div className="flex items-center justify-center sm:contents">
+              <span className="relative">GLOBAL IMPACT</span>
+            </div>
           </div>
         </div>
 
-        {/* Statistics: on mobile they float over the bottom of the image */}
+        {/* Mobile: full image shown below the text (no text over it) */}
         <div
-          className="sthoram-enter mt-[64px] grid w-full grid-cols-2 gap-2.5 sm:mt-[68px] sm:gap-4 md:mt-[88px] xl:grid-cols-4 md:gap-4 lg:mt-[105px] lg:gap-5 xl:mt-[112px]"
+          role="img"
+          aria-label="Renewable energy city at sunrise"
+          className="sthoram-enter relative mt-5 aspect-[3/2] w-full overflow-hidden rounded-[22px] bg-cover bg-center bg-no-repeat shadow-[0_18px_40px_rgba(26,63,100,0.22)] ring-1 ring-white/70 sm:hidden"
+          style={{ backgroundImage: BG_URL, animationDelay: "0.3s" }}
+        />
+
+        {/* Statistics: on mobile they float over the bottom edge of the image */}
+        <div
+          className="sthoram-enter relative z-10 -mt-12 grid w-full grid-cols-2 gap-2.5 sm:mt-[68px] sm:gap-4 md:mt-[88px] xl:grid-cols-4 md:gap-4 lg:mt-[105px] lg:gap-5 xl:mt-[112px]"
           style={{ animationDelay: "0.36s" }}
         >
           {stats.map((stat) => (
