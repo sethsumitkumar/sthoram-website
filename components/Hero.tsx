@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check } from "lucide-react";
+import {
+  FileText,
+  ShieldCheck,
+  Lightbulb,
+  ChartNoAxesColumn,
+  Check,
+} from "lucide-react";
 import { Bodoni_Moda, Instrument_Sans } from "next/font/google";
 
 const display = Bodoni_Moda({
@@ -16,95 +22,198 @@ const body = Instrument_Sans({
   display: "swap",
 });
 
+const BG_URL = 'url("/images/logo/Renewable%20Energy%20City%20at%20Sunrise.png")';
+
+// Background colour of the section that comes right after the hero.
+// Change this if your next section uses a slightly different dark colour.
+const NEXT_BG = "#050810";
+
 function CountUp({
   to,
-  decimals = 0,
-  suffix = "",
-  duration = 1600,
+  duration = 1500,
 }: {
   to: number;
-  decimals?: number;
-  suffix?: string;
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const element = ref.current;
+    if (!element) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setValue(to);
       return;
     }
 
-    let raf: number | undefined;
+    let animationFrame = 0;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
 
         observer.disconnect();
-
         const start = performance.now();
 
-        const tick = (now: number) => {
+        const animate = (now: number) => {
           const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 4);
 
-          setValue(to * (1 - Math.pow(1 - progress, 4)));
+          setValue(Math.round(to * eased));
 
           if (progress < 1) {
-            raf = requestAnimationFrame(tick);
+            animationFrame = requestAnimationFrame(animate);
+          } else {
+            setValue(to);
           }
         };
 
-        raf = requestAnimationFrame(tick);
+        animationFrame = requestAnimationFrame(animate);
       },
-      { threshold: 0.4 }
+      { threshold: 0.3 }
     );
 
-    observer.observe(el);
+    observer.observe(element);
 
     return () => {
       observer.disconnect();
-      if (raf !== undefined) cancelAnimationFrame(raf);
+      cancelAnimationFrame(animationFrame);
     };
   }, [to, duration]);
 
-  return (
-    <span ref={ref} className="tabular-nums">
-      {value.toFixed(decimals)}
-      {suffix}
-    </span>
-  );
+  return <span ref={ref}>{value}</span>;
 }
 
-function StatCard({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+const cardImg = (name: string) =>
+  `url("/images/card/${encodeURIComponent(name)}")`;
+
+const stats = [
+  {
+    label: "Patents Filed",
+    type: "patents",
+    accent: "#1788E8",
+    soft: "rgba(44, 151, 255, 0.16)",
+    image: cardImg("Glossy Blue Document Stack Background.png"),
+  },
+  {
+    label: "Validated",
+    type: "validated",
+    accent: "#00A995",
+    soft: "rgba(22, 199, 170, 0.18)",
+    image: cardImg("Pastel Mint Shield Security Banner.png"),
+  },
+  {
+    label: "Innovations",
+    type: "innovations",
+    accent: "#D99A14",
+    soft: "rgba(255, 190, 60, 0.22)",
+    image: cardImg("Warm Lightbulb Innovation Background.png"),
+  },
+  {
+    label: "Verticals",
+    type: "verticals",
+    accent: "#6553E8",
+    soft: "rgba(128, 107, 255, 0.18)",
+    image: cardImg("Pastel Growth Analytics Dashboard Abstract.png"),
+  },
+];
+
+function StatCard({ stat }: { stat: (typeof stats)[number] }) {
   return (
     <div
-      className="group relative flex h-[172px] flex-col items-center justify-center overflow-hidden rounded-[6px] border border-white/[0.07] bg-[#0A0F18] px-5 text-center transition-colors duration-500 hover:border-[#0796E2]/35 hover:bg-[#0C121D] sm:h-[190px] lg:h-[208px]"
-      style={{
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-      }}
+      tabIndex={0}
+      className="stat-card group relative flex aspect-[3/2] flex-col items-start justify-start overflow-hidden rounded-[16px] border-2 border-white/90 px-3 pb-3 pt-3.5 outline-none sm:aspect-auto sm:min-h-[140px] sm:items-stretch sm:justify-center sm:rounded-[18px] sm:px-5 sm:py-5 md:min-h-[150px] xl:min-h-[165px] xl:rounded-[20px] xl:px-6"
+      style={
+        {
+          "--accent": stat.accent,
+          "--soft": stat.soft,
+        } as React.CSSProperties
+      }
     >
-      <span className="absolute left-1/2 top-0 h-[2px] w-10 -translate-x-1/2 bg-[#0796E2] transition-[width] duration-500 ease-out group-hover:w-full" />
-
+      {/* Card illustration (zooms slightly on hover) */}
       <div
-        className={`${display.className} flex items-center justify-center gap-1.5 text-[50px] font-medium leading-none tracking-[-0.01em] text-[#F2F5FA] sm:text-[58px] lg:text-[66px]`}
-        style={{ fontVariantNumeric: "lining-nums" }}
-      >
-        {children}
+        className="stat-bg pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat sm:bg-bottom"
+        style={{ backgroundImage: stat.image }}
+      />
+
+      {/* Soft white fade on the left so content stays crisp */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(100deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.62) 45%, rgba(255,255,255,0) 78%)",
+        }}
+      />
+
+      <div className="relative z-10 flex items-center justify-start gap-2 sm:justify-center sm:gap-3.5">
+        <div
+          className="stat-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-[0_4px_12px_rgba(26,63,100,0.12)] ring-1 ring-white/80 sm:h-12 sm:w-12 xl:h-14 xl:w-14"
+          style={{
+            backgroundColor: stat.soft,
+            color: stat.accent,
+          }}
+        >
+          {stat.type === "patents" && (
+            <FileText className="h-5 w-5 sm:h-6 sm:w-6 xl:h-7 xl:w-7" strokeWidth={1.8} />
+          )}
+
+          {stat.type === "validated" && (
+            <ShieldCheck className="h-5 w-5 sm:h-7 sm:w-7 xl:h-8 xl:w-8" strokeWidth={1.8} />
+          )}
+
+          {stat.type === "innovations" && (
+            <Lightbulb className="h-5 w-5 sm:h-7 sm:w-7 xl:h-8 xl:w-8" strokeWidth={1.7} />
+          )}
+
+          {stat.type === "verticals" && (
+            <ChartNoAxesColumn
+              className="h-5 w-5 sm:h-7 sm:w-7 xl:h-8 xl:w-8"
+              strokeWidth={2.2}
+            />
+          )}
+        </div>
+
+        <div
+          className={`${display.className} stat-number flex items-center gap-0.5 whitespace-nowrap text-[30px] font-semibold leading-none tracking-[-0.045em] text-[#102342] sm:text-[44px] md:text-[50px] xl:text-[58px]`}
+        >
+          {stat.type === "patents" && (
+            <>
+              <CountUp to={24} />
+              <span
+                className="self-start pt-0.5 text-[16px] sm:text-[22px] xl:text-[26px]"
+                style={{ color: stat.accent }}
+              >
+                +
+              </span>
+            </>
+          )}
+
+          {stat.type === "validated" && (
+            <>
+              <span>POC</span>
+              <Check
+                className="ml-0.5 h-5 w-5 sm:h-7 sm:w-7 xl:h-8 xl:w-8"
+                strokeWidth={3}
+                style={{ color: stat.accent }}
+              />
+            </>
+          )}
+
+          {stat.type === "innovations" && <CountUp to={9} />}
+
+          {stat.type === "verticals" && <CountUp to={3} />}
+        </div>
       </div>
 
-      <div className="mt-6 text-[15px] font-medium leading-none tracking-[0.03em] text-[#8E9BAF] sm:mt-7 sm:text-[17px] lg:text-[19px]">
-        {label}
+      <div className="relative z-10 mt-2.5 text-left sm:mt-4 sm:text-center">
+        <span
+          className="stat-line mb-1.5 block h-[3px] w-7 rounded-full sm:mx-auto sm:mb-2.5 sm:w-9"
+          style={{ backgroundColor: stat.accent }}
+        />
+        <p className="text-[12px] font-semibold tracking-[-0.01em] text-[#0F1F3A] sm:text-[15px] md:text-[16px] xl:text-[18px]">
+          {stat.label}
+        </p>
       </div>
     </div>
   );
@@ -113,157 +222,240 @@ function StatCard({
 export default function Hero() {
   return (
     <section
-      className={`${body.className} relative min-h-[calc(100svh-68px)] overflow-hidden bg-black text-white`}
+      className={`${body.className} relative isolate w-full overflow-hidden bg-[#E7F2FA] text-[#0A1A35]`}
     >
       <style>{`
-        @keyframes hero-rise {
-          from { opacity: 0; transform: translateY(14px); }
-          to { opacity: 1; transform: none; }
+        @keyframes sthoram-enter {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
-        @keyframes hero-mark {
-          from { opacity: 0; transform: translateY(10px); filter: blur(8px); }
-          to { opacity: 1; transform: none; filter: blur(0); }
+        @keyframes sthoram-title {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+            filter: blur(4px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+          }
         }
 
-        @keyframes hero-rule {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
+        @keyframes sthoram-shine {
+          0%, 55% { transform: translateX(-120%) skewX(-20deg); }
+          100% { transform: translateX(420%) skewX(-20deg); }
         }
 
-        .hero-rise {
-          opacity: 0;
-          animation: hero-rise .9s cubic-bezier(.2,.7,.2,1) forwards;
+        .sthoram-enter {
+          animation: sthoram-enter .8s cubic-bezier(.2,.7,.2,1) both;
         }
 
-        .hero-mark {
-          opacity: 0;
-          animation: hero-mark 1.3s cubic-bezier(.2,.7,.2,1) .05s forwards;
+        .strip-shine {
+          animation: sthoram-shine 7s ease-in-out 1.5s infinite;
         }
 
-        .rule-l {
-          transform-origin: right;
-          transform: scaleX(0);
-          animation: hero-rule 1.1s cubic-bezier(.2,.7,.2,1) .7s forwards;
+        .sthoram-title {
+          animation: sthoram-title 1s cubic-bezier(.2,.7,.2,1) both;
         }
 
-        .rule-r {
-          transform-origin: left;
-          transform: scaleX(0);
-          animation: hero-rule 1.1s cubic-bezier(.2,.7,.2,1) .7s forwards;
+        .stat-card {
+          background: #fff;
+          cursor: pointer;
+          box-shadow:
+            0 8px 22px rgba(26,63,100,.10),
+            0 2px 6px rgba(26,63,100,.05),
+            inset 0 1px 0 rgba(255,255,255,.98);
+          -webkit-tap-highlight-color: transparent;
+          transition:
+            transform .35s cubic-bezier(.2,.7,.2,1),
+            box-shadow .35s ease,
+            border-color .25s ease;
         }
 
-        .stat-plus {
-          align-self: flex-start;
-          margin-top: 0.14em;
-          font-size: 0.46em;
-          font-weight: 500;
-          line-height: 1;
-          color: #0796E2;
+        .stat-bg {
+          transition: transform .8s cubic-bezier(.2,.7,.2,1);
+        }
+
+        .stat-number,
+        .stat-icon {
+          transition: transform .35s cubic-bezier(.2,.7,.2,1);
+        }
+
+        .stat-line {
+          transition: width .35s ease;
+        }
+
+        /* Hover, keyboard focus and touch (tap) all get the black border */
+        .stat-card:hover,
+        .stat-card:focus-visible,
+        .stat-card:active {
+          transform: translateY(-4px);
+          border-color: #0A0F1C;
+          box-shadow:
+            0 18px 36px rgba(10,15,28,.20),
+            0 4px 10px rgba(10,15,28,.10);
+        }
+
+        .stat-card:active {
+          transform: translateY(-1px) scale(.985);
+        }
+
+        .stat-card:hover .stat-bg,
+        .stat-card:focus-visible .stat-bg {
+          transform: scale(1.07);
+        }
+
+        .stat-card:hover .stat-icon,
+        .stat-card:focus-visible .stat-icon {
+          transform: scale(1.08) rotate(-4deg);
+        }
+
+        .stat-card:hover .stat-number,
+        .stat-card:focus-visible .stat-number {
+          transform: scale(1.04);
+        }
+
+        .stat-card:hover .stat-line,
+        .stat-card:focus-visible .stat-line {
+          width: 56px;
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .hero-rise,
-          .hero-mark {
+          .sthoram-enter,
+          .sthoram-title,
+          .strip-shine {
             animation: none;
-            opacity: 1;
-            filter: none;
-            transform: none;
           }
 
-          .rule-l,
-          .rule-r {
-            animation: none;
-            transform: none;
+          .stat-card,
+          .stat-bg,
+          .stat-number,
+          .stat-icon,
+          .stat-line {
+            transition: none;
           }
         }
       `}</style>
 
       {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-7%] top-[-12%] h-[680px] w-[680px] rounded-full bg-[#071521] opacity-80 blur-[25px]" />
+      <div className="pointer-events-none absolute inset-0 -z-20">
+        {/* Mobile: full image in natural ratio, fading softly into the section colour */}
+        <div className="absolute inset-x-0 top-0 aspect-[3/2] sm:hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: BG_URL }}
+          />
+          <div
+            className="absolute inset-x-0 -bottom-px top-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(231,242,250,0) 0%, rgba(231,242,250,0) 50%, #E7F2FA 100%)",
+            }}
+          />
+        </div>
 
-        <div className="absolute right-[-15%] top-[-5%] h-[720px] w-[520px] rotate-[-19deg] rounded-full border border-[#12293B]/50 bg-[#06111B]/35" />
-
-        <div className="absolute left-1/2 top-[18%] h-[360px] w-[900px] -translate-x-1/2 rounded-full bg-[#0796E2]/[0.07] blur-[120px]" />
-
+        {/* Tablet/Desktop: full-cover background (same as before) */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 hidden bg-cover bg-center bg-no-repeat sm:block"
           style={{
-            background:
-              "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%)",
+            backgroundImage: BG_URL,
+            backgroundPosition: "center center",
           }}
         />
       </div>
 
-      {/* Hero Content */}
-      <div className="relative mx-auto flex w-full max-w-[1500px] flex-col items-center px-5 pb-8 pt-[96px] sm:px-8 sm:pt-[104px] lg:px-10 lg:pt-[108px]">
-        <h1
-          className={`${display.className} hero-mark w-full select-none text-center font-extrabold uppercase leading-[0.9] tracking-[-0.02em] text-transparent`}
-          style={{
-            fontSize: "clamp(56px, min(14.2vw, 21vh), 230px)",
-            backgroundImage:
-              "linear-gradient(180deg, #FFFFFF 35%, #B9C6D6 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-          }}
-        >
-          STHORAM
-        </h1>
+      {/* Keep the reference image bright (desktop/tablet only) */}
+      <div className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-b from-white/[0.04] via-transparent to-[#F4F8FC]/[0.08] sm:block" />
 
+      {/* Smooth fade from the hero into the dark section below (mobile) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-[150px] sm:hidden"
+        style={{
+          background: `linear-gradient(to bottom, rgba(11,36,68,0) 0%, rgba(11,36,68,0.55) 45%, ${NEXT_BG} 100%)`,
+        }}
+      />
+
+      {/* Smooth fade from the hero into the dark section below (tablet/desktop) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 hidden h-[150px] sm:block lg:h-[170px]"
+        style={{
+          background: `linear-gradient(to bottom, transparent 0%, ${NEXT_BG}99 55%, ${NEXT_BG} 100%)`,
+        }}
+      />
+
+      {/* Hero content */}
+      <div className="mx-auto flex w-full max-w-[1500px] flex-col items-center px-3 pb-[100px] pt-[100px] sm:px-6 sm:pb-[120px] sm:pt-[112px] md:px-8 md:pt-[118px] lg:px-10 lg:pb-[140px] lg:pt-[126px] xl:px-12">
+        {/* Main title */}
+        <div className="sthoram-title w-full text-center">
+          <h1
+            className={`${display.className} select-none text-[clamp(48px,8.5vw,124px)] font-bold uppercase leading-[0.95] tracking-[-0.065em] text-[#07182F]`}
+          >
+            STHO<span className="text-[#087FE8]">R</span>AM
+          </h1>
+        </div>
+
+        {/* Subtitle */}
         <div
-          className="hero-rise mt-4 flex w-full items-center justify-center gap-5 sm:mt-5 sm:gap-8"
-          style={{ animationDelay: "0.35s" }}
+          className="sthoram-enter mt-2 flex w-full items-center justify-center gap-2.5 sm:mt-3 sm:gap-4"
+          style={{ animationDelay: "0.12s" }}
         >
-          <span className="rule-l hidden h-px max-w-[220px] flex-1 bg-gradient-to-l from-[#0796E2]/70 to-transparent sm:block" />
+          <span className="hidden h-px max-w-[90px] flex-1 bg-[#0B3155]/45 sm:block md:max-w-[120px]" />
 
-          <h2 className="text-center text-[clamp(17px,2.7vw,40px)] font-semibold uppercase leading-none tracking-[0.2em] text-[#0796E2]">
+          <h2 className="whitespace-nowrap text-center text-[clamp(11px,1.9vw,26px)] font-bold uppercase leading-tight tracking-[0.10em] text-[#102B4E] sm:tracking-[0.18em]">
             Deep Tech Innovations
           </h2>
 
-          <span className="rule-r hidden h-px max-w-[220px] flex-1 bg-gradient-to-r from-[#0796E2]/70 to-transparent sm:block" />
+          <span className="hidden h-px max-w-[90px] flex-1 bg-[#0B3155]/45 sm:block md:max-w-[120px]" />
         </div>
 
+        {/* Brand keywords: premium dark glass strip with gradient border */}
         <div
-          className="hero-rise mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center text-[13px] font-medium uppercase leading-none tracking-[0.2em] text-[#A1AAB8] sm:mt-7 sm:gap-x-5 sm:text-[15px] lg:text-[16px] xl:text-[18px]"
-          style={{ animationDelay: "0.5s" }}
+          className="sthoram-enter mt-4 max-w-full rounded-2xl bg-gradient-to-r from-[#2C97FF]/80 via-white/30 to-[#2C97FF]/80 p-px shadow-[0_16px_44px_rgba(4,18,43,0.5),0_0_30px_rgba(44,151,255,0.18)] sm:mt-5 sm:rounded-full"
+          style={{ animationDelay: "0.24s" }}
         >
-          <span>STHORAM BMS</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
-          <span>STHORAM KAVACH</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
-          <span>ATMANIRBHAR BHARAT</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
-          <span>Indian IP</span>
-          <span className="h-[3px] w-[3px] rounded-full bg-[#4B5563]" />
-          <span>Global Impact</span>
+          <div
+            className="relative flex flex-wrap items-center justify-center gap-x-3 gap-y-2 overflow-hidden rounded-[15px] px-5 py-3 text-center text-[10px] font-semibold uppercase leading-relaxed tracking-[0.1em] text-white sm:gap-x-5 sm:rounded-full sm:px-10 sm:py-3.5 sm:text-[12px] sm:tracking-[0.16em] md:gap-x-6 md:text-[13px] lg:text-[15px]"
+            style={{
+              background:
+                "linear-gradient(135deg, #0C2850 0%, #06142B 50%, #0A1F42 100%)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,.14), inset 0 -10px 24px rgba(44,151,255,.08)",
+            }}
+          >
+            {/* top highlight line */}
+            <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+
+            {/* slow light sweep */}
+            <span className="strip-shine pointer-events-none absolute inset-y-0 left-0 w-1/5 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+            <span className="relative">STHORAM BMS</span>
+            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+            <span className="relative">STHORAM KAVACH</span>
+            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+            <span className="relative">ATMANIRBHAR BHARAT</span>
+            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+            <span className="relative">INDIAN IP</span>
+            <span className="relative h-1.5 w-1.5 rounded-full bg-[#2C97FF] shadow-[0_0_8px_2px_rgba(44,151,255,0.75)]" />
+            <span className="relative">GLOBAL IMPACT</span>
+          </div>
         </div>
 
-        {/* Statistics */}
+        {/* Statistics: on mobile they float over the bottom of the image */}
         <div
-          className="hero-rise mt-10 grid w-full grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-4 lg:gap-5"
-          style={{ animationDelay: "0.7s" }}
+          className="sthoram-enter mt-[64px] grid w-full grid-cols-2 gap-2.5 sm:mt-[68px] sm:gap-4 md:mt-[88px] xl:grid-cols-4 md:gap-4 lg:mt-[105px] lg:gap-5 xl:mt-[112px]"
+          style={{ animationDelay: "0.36s" }}
         >
-          <StatCard label="Patents Filed">
-            <CountUp to={24} />
-            <span className={`${body.className} stat-plus`}>+</span>
-          </StatCard>
-
-          <StatCard label="Validated">
-            <span>POC</span>
-            <Check
-              strokeWidth={2.6}
-              className="h-[28px] w-[28px] text-[#0796E2] sm:h-[34px] sm:w-[34px] lg:h-[38px] lg:w-[38px]"
-            />
-          </StatCard>
-
-          <StatCard label="Innovations">
-            <CountUp to={9} />
-          </StatCard>
-
-          <StatCard label="Verticals">
-            <CountUp to={3} />
-          </StatCard>
+          {stats.map((stat) => (
+            <StatCard key={stat.type} stat={stat} />
+          ))}
         </div>
       </div>
     </section>
