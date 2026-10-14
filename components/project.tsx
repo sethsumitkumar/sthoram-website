@@ -466,7 +466,7 @@ export default function Verticals() {
         }}
       />
 
-      {/* Layer 2: the FULL panorama, sharp and never cropped, fading smoothly into layer 1 */}
+      {/* Layer 2: the FULL panorama, sharp and never cropped (car, grid and radar all visible), fading smoothly into layer 1 */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 mx-auto hidden w-full max-w-[1920px] md:block"
@@ -516,7 +516,7 @@ export default function Verticals() {
           </div>
         </div>
 
-        {/* Panorama: on phones it is shown in full under the heading; from md up it is only a spacer */}
+        {/* Panorama: on phones it is shown in full under the heading; from md up it is only a spacer (the section photo is the background) */}
         <div
           aria-hidden="true"
           className="v-pan-pull pointer-events-none relative mx-auto w-full max-w-[1920px]"
@@ -545,7 +545,7 @@ export default function Verticals() {
           onScroll={handleScroll}
           role="region"
           aria-label="Our three verticals"
-          className={`v-track -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-6 pt-3 sm:-mx-8 sm:scroll-px-8 sm:gap-4 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 md:pt-0 xl:grid-cols-3 xl:gap-6 ${
+          className={`v-track -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-8 pt-3 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 md:pt-0 xl:grid-cols-3 xl:gap-6 ${
             visible ? "v-visible" : ""
           }`}
         >
@@ -558,7 +558,7 @@ export default function Verticals() {
                 tabIndex={0}
                 onMouseMove={handleMove}
                 onMouseLeave={handleLeave}
-                className={`v-card group relative flex w-[76%] shrink-0 snap-start flex-col overflow-hidden rounded-[20px] border-2 border-white sm:w-[56%] md:shrink md:rounded-[20px] md:border-white/80 ${
+                className={`v-card group relative flex w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-[24px] border-2 border-white sm:w-[72%] md:shrink md:rounded-[20px] md:border-white/80 ${
                   index === verticals.length - 1
                     ? "md:col-span-2 md:mx-auto md:w-[calc(50%-0.5rem)] xl:col-span-1 xl:mx-0 xl:w-auto"
                     : "md:w-auto"
@@ -576,7 +576,7 @@ export default function Verticals() {
                 {/* Card illustration, fading into the card body */}
                 <div
                   aria-hidden="true"
-                  className="v-img pointer-events-none absolute inset-x-0 top-0 h-[185px] bg-cover bg-no-repeat sm:h-[200px] md:h-[190px]"
+                  className="v-img pointer-events-none absolute inset-x-0 top-0 h-[250px] bg-cover bg-no-repeat sm:h-[260px] md:h-[190px]"
                   style={{
                     backgroundImage: item.image,
                     backgroundPosition: item.imagePosition,
@@ -590,7 +590,7 @@ export default function Verticals() {
                 {/* Soft white veil on top so the header text stays crisp */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 top-0 h-[75px] md:h-[70px]"
+                  className="pointer-events-none absolute inset-x-0 top-0 h-[90px] md:h-[70px]"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(255,255,255,.62) 0%, rgba(255,255,255,0) 100%)",
@@ -617,19 +617,19 @@ export default function Verticals() {
                   }}
                 />
 
-                <div className="relative z-10 flex flex-1 flex-col p-4 sm:p-5 md:p-4">
+                <div className="relative z-10 flex flex-1 flex-col p-5 sm:p-6 md:p-4">
                   {/* Top area: number + category + icon (illustration shows through) */}
-                  <div className="h-[112px] sm:h-[122px] md:h-[118px]">
+                  <div className="h-[150px] sm:h-[155px] md:h-[118px]">
                     <div className="flex items-center justify-between">
                       <span
-                        className="text-[17px] font-bold tracking-[0.08em] text-[#0B1D3A] sm:text-[20px] md:text-[18px]"
+                        className="text-[21px] font-bold tracking-[0.08em] text-[#0B1D3A] sm:text-[23px] md:text-[18px]"
                         style={{ fontFamily: SERIF }}
                       >
                         0{index + 1}
                       </span>
 
                       <span
-                        className="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] shadow-[0_8px_20px_rgba(16,35,66,0.18)] backdrop-blur-md sm:text-[12.5px] md:px-3 md:py-1.5 md:text-[11.5px] md:tracking-[0.14em]"
+                        className="rounded-full bg-white/90 px-4 py-2 text-[13.5px] font-extrabold uppercase tracking-[0.16em] shadow-[0_8px_20px_rgba(16,35,66,0.18)] backdrop-blur-md sm:text-[14.5px] md:px-3 md:py-1.5 md:text-[11.5px] md:tracking-[0.14em]"
                         style={{
                           color: item.accent,
                           border: `1px solid ${item.soft}`,
@@ -640,40 +640,40 @@ export default function Verticals() {
                     </div>
 
                     <div
-                      className="v-icon mt-3 flex h-[36px] w-[36px] items-center justify-center rounded-[11px] bg-white md:mt-3 md:h-[38px] md:w-[38px] md:rounded-[12px]"
+                      className="v-icon mt-5 flex h-[46px] w-[46px] items-center justify-center rounded-[14px] bg-white md:mt-3 md:h-[38px] md:w-[38px] md:rounded-[12px]"
                       style={{
                         color: item.accent,
                         boxShadow: `0 10px 24px rgba(16,35,66,0.14), 0 0 0 1px ${item.soft}`,
                       }}
                     >
-                      <Icon size={19} strokeWidth={1.7} aria-hidden="true" />
+                      <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
                     </div>
                   </div>
 
                   {/* Card Title */}
                   <h3
-                    className="text-[20px] font-bold leading-[1.2] tracking-[-0.01em] text-[#0B1D3A] sm:min-h-[52px] sm:text-[22px] md:min-h-[52px] md:text-[21px]"
+                    className="text-[25px] font-bold leading-[1.2] tracking-[-0.01em] text-[#0B1D3A] sm:min-h-[68px] sm:text-[28px] md:min-h-[52px] md:text-[21px]"
                     style={{ fontFamily: SERIF }}
                   >
                     {item.title}
                   </h3>
 
                   {/* Divider */}
-                  <div className="my-3 h-px w-full bg-[#0B1D3A]/10 md:my-3" />
+                  <div className="my-4 h-px w-full bg-[#0B1D3A]/10 md:my-3" />
 
                   {/* Feature List */}
-                  <ul className="flex flex-1 flex-col gap-2 md:gap-2">
+                  <ul className="flex flex-1 flex-col gap-3 md:gap-2">
                     {item.points.map((point, pointIndex) => (
                       <li
                         key={point}
-                        className="v-li flex items-start gap-2.5 md:gap-2.5"
+                        className="v-li flex items-start gap-3 md:gap-2.5"
                         style={{ transitionDelay: `${pointIndex * 45}ms` }}
                       >
                         <span
-                          className="v-dash mt-[9px] h-[2px] w-3 shrink-0 rounded-full md:mt-[10px] md:h-[2px] md:w-3.5"
+                          className="v-dash mt-[13px] h-[2.5px] w-3.5 shrink-0 rounded-full md:mt-[10px] md:h-[2px]"
                           style={{ backgroundColor: item.accent }}
                         />
-                        <span className="text-[14px] font-medium leading-[1.4] text-[#2A3A55] sm:text-[15px] md:text-[14px] md:leading-[1.45]">
+                        <span className="text-[16.5px] font-medium leading-[1.5] text-[#2A3A55] sm:text-[17.5px] md:text-[14px] md:leading-[1.45]">
                           {point}
                         </span>
                       </li>
@@ -681,10 +681,10 @@ export default function Verticals() {
                   </ul>
 
                   {/* Footer */}
-                  <div className="mt-3 flex items-center justify-end border-t border-[#0B1D3A]/10 pt-2.5 md:mt-3 md:pt-2.5">
-                    <span className="v-arrow flex h-8 w-8 items-center justify-center rounded-full shadow-[0_6px_16px_rgba(16,35,66,0.12)] md:h-8 md:w-8">
+                  <div className="mt-5 flex items-center justify-end border-t border-[#0B1D3A]/10 pt-3 md:mt-3 md:pt-2.5">
+                    <span className="v-arrow flex h-10 w-10 items-center justify-center rounded-full shadow-[0_6px_16px_rgba(16,35,66,0.12)] md:h-8 md:w-8">
                       <ArrowUpRight
-                        size={16}
+                        size={18}
                         strokeWidth={1.8}
                         aria-hidden="true"
                       />
