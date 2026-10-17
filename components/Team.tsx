@@ -122,19 +122,22 @@ export default function Team() {
     <section
       id="team"
       style={{ overflowX: "clip" }}
-      className="t-stage relative scroll-mt-[90px] pb-12 sm:pb-16 md:bg-[#F7E6CC] md:pb-16"
+      className="t-stage relative scroll-mt-[90px] pb-5 max-md:flex max-md:flex-col max-md:overflow-hidden sm:pb-6 md:bg-[#F7E6CC] md:pb-16"
     >
       <style>{`
-        /* Phone: soft sky -> warm cream, matches the photo */
-        .t-stage {
-          background: linear-gradient(180deg, #D3E3F8 0%, #E6EFFB 28%, #F7E6CC 70%, #F7E6CC 100%);
+        .t-stage { background: #DCE8F8; }
+
+        /* Phone: section fills one full screen (viewport minus header) */
+        @media (max-width: 767px) {
+          .t-stage { min-height: calc(100svh - 72px); }
         }
+
         @media (min-width: 768px) {
           .t-stage { background: #F7E6CC; }
         }
 
         /* Phone: cards slide up over the lower part of the photo */
-        .t-cards-pull { margin-top: calc(-0.2 * 100vw); }
+        .t-cards-pull { margin-top: calc(-0.22 * 100vw); }
         @media (min-width: 768px) {
           .t-cards-pull { margin-top: 0; }
         }
@@ -152,6 +155,30 @@ export default function Team() {
           .t-hint { animation: none; }
         }
       `}</style>
+
+      {/* PHONE background layer 1: blurred copy of the SAME photo fills the whole section,
+          so there is never a flat colour band - only matching sunset tones */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 md:hidden"
+        style={{
+          backgroundImage: BG_IMAGE,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          filter: "blur(26px) saturate(1.05)",
+          transform: "scale(1.25)",
+        }}
+      />
+      {/* PHONE soft mist on top (blends with header / News) and a light wash at the bottom */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 md:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(238,244,252,0.92) 0%, rgba(238,244,252,0.45) 16%, rgba(238,244,252,0.10) 32%, rgba(255,255,255,0) 70%, rgba(255,248,238,0.35) 100%)",
+        }}
+      />
 
       {/* DESKTOP background: FULL photo at its real ratio, never cropped (board stays visible) */}
       <div
@@ -173,11 +200,11 @@ export default function Team() {
         />
       </div>
 
-      {/* Extension strip above the section (phone: solid sky) */}
+      {/* Extension strip above the section (phone: same mist colour as the top of this section) */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 -top-8 h-8 md:hidden"
-        style={{ background: "#D3E3F8" }}
+        style={{ background: "#EEF4FC" }}
       />
       {/* Extension strip above the section (desktop: mirrored sky) */}
       <div
@@ -193,11 +220,12 @@ export default function Team() {
       />
 
       {/* Heading */}
-      <div className="relative mx-auto max-w-[1000px] px-5 pt-9 sm:px-6 sm:pt-12">
+      <div className="relative mx-auto w-full max-w-[1000px] px-5 pt-7 sm:px-6 sm:pt-12">
         <div className="mx-auto text-center lg:max-w-[560px]">
-          <div className="flex items-center justify-center gap-3">
+          {/* Glass pill on phone (same as News), hairlines on larger screens */}
+          <div className="mx-auto flex w-fit items-center justify-center gap-3 max-sm:rounded-full max-sm:border max-sm:border-white/70 max-sm:bg-white/70 max-sm:px-5 max-sm:py-1.5 max-sm:shadow-[0_6px_20px_-8px_rgba(15,27,51,0.35)] max-sm:backdrop-blur-md sm:w-full">
             <span
-              className="h-px w-10 sm:w-12"
+              className="h-px w-10 max-sm:hidden sm:w-12"
               style={{
                 background: `linear-gradient(to right, transparent, ${BLUE})`,
               }}
@@ -209,7 +237,7 @@ export default function Team() {
               Team
             </span>
             <span
-              className="h-px w-10 sm:w-12"
+              className="h-px w-10 max-sm:hidden sm:w-12"
               style={{
                 background: `linear-gradient(to left, transparent, ${BLUE})`,
               }}
@@ -217,11 +245,11 @@ export default function Team() {
           </div>
 
           <h2
-            className={`${serif.className} mt-3 text-[30px] font-semibold leading-[1.12] tracking-[-0.02em] sm:mt-4 sm:text-[38px] lg:text-[42px]`}
+            className={`${serif.className} mt-3 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] sm:mt-4 sm:text-[38px] lg:text-[42px]`}
             style={{ color: NAVY }}
           >
             The people behind the
-            <br className="hidden sm:block" />{" "}
+            <br />
             <span style={{ color: BRONZE }}>innovations.</span>
           </h2>
         </div>
@@ -230,10 +258,14 @@ export default function Team() {
         <div className="hidden h-[9vw] max-h-[170px] min-h-[40px] md:block" />
       </div>
 
-      {/* PHONE photo: shown in full under the heading (board fully visible) */}
+      {/* PHONE spacer: takes the extra height so photo + cards sit at the bottom of the screen */}
+      <div aria-hidden="true" className="min-h-[8px] flex-1 md:hidden" />
+
+      {/* PHONE photo: FULL width at its real ratio (board fully visible, nothing cropped).
+          Its top and bottom fade into the blurred background of the same photo. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none relative mt-4 w-full md:hidden"
+        className="pointer-events-none relative w-full md:hidden"
         style={{ aspectRatio: "1672 / 941" }}
       >
         <div
@@ -243,28 +275,28 @@ export default function Team() {
             backgroundSize: "100% 100%",
             backgroundRepeat: "no-repeat",
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
             maskImage:
-              "linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, #000 22%, #000 78%, transparent 100%)",
           }}
         />
       </div>
 
       {/* Cards: swipe carousel on phone, compact 3-column grid from md */}
-      <div className="t-cards-pull relative z-10 mx-auto max-w-[1000px] px-5 sm:px-6 md:mt-4">
+      <div className="t-cards-pull relative z-10 mx-auto w-full max-w-[1000px] px-5 sm:px-6 md:mt-4">
         <div
           ref={trackRef}
           onScroll={handleScroll}
           role="region"
           aria-label="Our team"
-          className="t-track -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-8 pt-3 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 md:pt-0"
+          className="t-track -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 pt-3 sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 md:pt-0"
         >
           {teamMembers.map((member, index) => (
             /* Outer wrapper = gradient border */
             <article
               key={member.initials}
               onMouseMove={handleMove}
-              className="group relative w-[84%] shrink-0 snap-start rounded-[20px] p-[1.5px] shadow-[0_14px_36px_rgba(120,80,40,0.22)] transition-all duration-500 ease-out sm:w-[62%] md:w-auto md:shrink md:hover:-translate-y-2 md:hover:shadow-[0_30px_70px_rgba(185,133,87,0.40)]"
+              className="group relative w-[84%] shrink-0 snap-start rounded-[20px] p-[1.5px] shadow-[0_12px_30px_rgba(15,27,51,0.28)] transition-all duration-500 ease-out sm:w-[62%] md:w-auto md:shrink md:shadow-[0_14px_36px_rgba(120,80,40,0.22)] md:hover:-translate-y-2 md:hover:shadow-[0_30px_70px_rgba(185,133,87,0.40)]"
               style={{
                 background:
                   "linear-gradient(145deg, rgba(185,133,87,0.65) 0%, rgba(255,255,255,0.95) 45%, rgba(185,133,87,0.45) 100%)",
@@ -280,7 +312,7 @@ export default function Team() {
               />
 
               {/* Inner card */}
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[18.5px] bg-gradient-to-b from-[#FFFDF9] to-[#FAF1E4] px-5 pb-4 pt-6 sm:px-6 md:px-5 md:pb-4 md:pt-6">
+              <div className="relative flex h-full flex-col overflow-hidden rounded-[18.5px] bg-gradient-to-b from-[#FFFDF9] to-[#FAF1E4] px-5 pb-3 pt-5 sm:px-6 md:px-5 md:pb-4 md:pt-6">
                 {/* Mouse spotlight */}
                 <div
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 md:group-hover:opacity-100"
@@ -315,11 +347,11 @@ export default function Team() {
                     <div className="absolute inset-0 rounded-full bg-[#B98557]/20 blur-xl transition-all duration-500 md:bg-[#B98557]/0 md:group-hover:bg-[#B98557]/40" />
 
                     <div
-                      className="relative flex h-[68px] w-[68px] items-center justify-center rounded-full border bg-gradient-to-b from-white to-[#F6EBDD] shadow-[0_4px_14px_rgba(185,133,87,0.25)] transition-all duration-500 md:h-[64px] md:w-[64px] md:group-hover:border-transparent md:group-hover:from-[#1B2B4D] md:group-hover:to-[#0F1B33]"
+                      className="relative flex h-[60px] w-[60px] items-center justify-center rounded-full border bg-gradient-to-b from-white to-[#F6EBDD] shadow-[0_4px_14px_rgba(185,133,87,0.25)] transition-all duration-500 md:h-[64px] md:w-[64px] md:group-hover:border-transparent md:group-hover:from-[#1B2B4D] md:group-hover:to-[#0F1B33]"
                       style={{ borderColor: "rgba(185,133,87,0.55)" }}
                     >
                       <span
-                        className={`${serif.className} text-[25px] font-medium text-[#0F1B33] transition-colors duration-500 md:text-[23px] md:group-hover:text-[#F3D9AE]`}
+                        className={`${serif.className} text-[22px] font-medium text-[#0F1B33] transition-colors duration-500 md:text-[23px] md:group-hover:text-[#F3D9AE]`}
                       >
                         {member.initials}
                       </span>
@@ -333,15 +365,15 @@ export default function Team() {
                 </div>
 
                 {/* Name + role */}
-                <div className="relative mt-5 text-center md:mt-4">
+                <div className="relative mt-4 text-center md:mt-4">
                   <h3
-                    className={`${serif.className} text-[21px] font-semibold leading-tight text-[#0F1B33] md:text-[19px]`}
+                    className={`${serif.className} text-[20px] font-semibold leading-tight text-[#0F1B33] md:text-[19px]`}
                   >
                     {member.name}
                   </h3>
 
                   <p
-                    className="mx-auto mt-2 max-w-[280px] font-sans text-[10.5px] font-semibold uppercase leading-[1.7] tracking-[0.12em] md:max-w-[240px] md:text-[10px] md:tracking-[0.12em]"
+                    className="mx-auto mt-1.5 max-w-[280px] font-sans text-[10px] font-semibold uppercase leading-[1.6] tracking-[0.12em] md:mt-2 md:max-w-[240px] md:text-[10px] md:tracking-[0.12em]"
                     style={{ color: BLUE }}
                   >
                     {member.role}
@@ -349,7 +381,7 @@ export default function Team() {
                 </div>
 
                 {/* Divider with diamond */}
-                <div className="relative mx-auto mt-4 flex w-full items-center justify-center gap-2 md:mt-3">
+                <div className="relative mx-auto mt-3 flex w-full items-center justify-center gap-2 md:mt-3">
                   <span
                     className="h-px w-10 transition-all duration-500 md:w-8 md:group-hover:w-12"
                     style={{
@@ -370,7 +402,7 @@ export default function Team() {
 
                 {/* Description */}
                 <p
-                  className="relative mt-4 flex-1 text-center font-sans text-[14px] leading-[1.65] md:mt-3 md:text-[12.5px] md:leading-[1.6]"
+                  className="relative mt-3 flex-1 text-center font-sans text-[13px] leading-[1.55] md:mt-3 md:text-[12.5px] md:leading-[1.6]"
                   style={{ color: "#3F4452" }}
                 >
                   {member.description}
@@ -378,24 +410,24 @@ export default function Team() {
 
                 {/* Footer */}
                 <div
-                  className="relative mt-4 flex items-center justify-between border-t pt-3 md:mt-4 md:pt-3"
+                  className="relative mt-3 flex items-center justify-between border-t pt-2.5 md:mt-4 md:pt-3"
                   style={{ borderColor: "rgba(185,133,87,0.25)" }}
                 >
                   <span
-                    className="font-sans text-[10.5px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 md:text-[10px] md:group-hover:text-[#B98557]"
+                    className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 md:group-hover:text-[#B98557]"
                     style={{ color: "rgba(15,27,51,0.6)" }}
                   >
                     STHORAM LABS
                   </span>
 
                   <span
-                    className="flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-500 md:h-8 md:w-8 md:group-hover:rotate-45 md:group-hover:border-transparent md:group-hover:bg-gradient-to-br md:group-hover:from-[#D9A86B] md:group-hover:to-[#B98557] md:group-hover:text-white md:group-hover:shadow-[0_6px_16px_rgba(185,133,87,0.5)]"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-500 md:group-hover:rotate-45 md:group-hover:border-transparent md:group-hover:bg-gradient-to-br md:group-hover:from-[#D9A86B] md:group-hover:to-[#B98557] md:group-hover:text-white md:group-hover:shadow-[0_6px_16px_rgba(185,133,87,0.5)]"
                     style={{
                       borderColor: "rgba(185,133,87,0.6)",
                       color: BRONZE,
                     }}
                   >
-                    <ArrowUpRight size={16} strokeWidth={1.8} />
+                    <ArrowUpRight size={15} strokeWidth={1.8} />
                   </span>
                 </div>
               </div>
@@ -403,36 +435,38 @@ export default function Team() {
           ))}
         </div>
 
-        {/* Phone: swipe dots + hint */}
-        <div className="flex flex-col items-center gap-3 md:hidden">
-          <div
-            className="flex items-center justify-center gap-2"
-            role="tablist"
-            aria-label="Choose team member"
-          >
-            {teamMembers.map((member, index) => (
-              <button
-                key={member.initials}
-                type="button"
-                role="tab"
-                aria-selected={active === index}
-                aria-label={`Show ${member.name}`}
-                onClick={() => goTo(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  active === index
-                    ? "w-7 bg-[#B98557] shadow-[0_0_12px_rgba(185,133,87,0.6)]"
-                    : "w-2 bg-[#0F1B33]/25"
-                }`}
-              />
-            ))}
-          </div>
+        {/* Phone: swipe dots + hint (glass pill so it stays readable on the photo) */}
+        <div className="flex justify-center md:hidden">
+          <div className="flex items-center gap-3 rounded-full border border-white/70 bg-white/70 px-4 py-1.5 shadow-[0_6px_20px_-8px_rgba(15,27,51,0.35)] backdrop-blur-md">
+            <div
+              className="flex items-center justify-center gap-2"
+              role="tablist"
+              aria-label="Choose team member"
+            >
+              {teamMembers.map((member, index) => (
+                <button
+                  key={member.initials}
+                  type="button"
+                  role="tab"
+                  aria-selected={active === index}
+                  aria-label={`Show ${member.name}`}
+                  onClick={() => goTo(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    active === index
+                      ? "w-7 bg-[#B98557] shadow-[0_0_12px_rgba(185,133,87,0.6)]"
+                      : "w-2 bg-[#0F1B33]/25"
+                  }`}
+                />
+              ))}
+            </div>
 
-          <span
-            className="font-sans text-[10.5px] font-semibold uppercase tracking-[0.22em]"
-            style={{ color: "rgba(15,27,51,0.5)" }}
-          >
-            Swipe <span className="t-hint inline-block">→</span>
-          </span>
+            <span
+              className="font-sans text-[10px] font-semibold uppercase tracking-[0.22em]"
+              style={{ color: "rgba(15,27,51,0.6)" }}
+            >
+              Swipe <span className="t-hint inline-block">→</span>
+            </span>
+          </div>
         </div>
       </div>
     </section>

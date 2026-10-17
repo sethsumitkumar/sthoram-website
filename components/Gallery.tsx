@@ -402,12 +402,15 @@ export default function Gallery() {
               >
                 {/* Photo (mobile: top block, sm+: fills the whole card) */}
                 <div className="relative aspect-[4/3.4] w-full overflow-hidden sm:absolute sm:inset-0 sm:aspect-auto">
+                  {/* width/height here only tell the browser the image ratio.
+                      The real size still comes from the parent div (h-full w-full + object-cover). */}
                   <Image
                     src={image.src}
                     alt={`${image.label} image ${index + 1}`}
-                    fill
+                    width={1600}
+                    height={900}
                     sizes="(max-width: 640px) 86vw, 50vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
                   />
 
                   {/* Gradient: soft blend into the info panel on mobile,
