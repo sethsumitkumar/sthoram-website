@@ -391,7 +391,7 @@ export default function Footer() {
               className="font-sans text-[12.5px] font-semibold lg:px-8"
               style={{ color: NAVY }}
             >
-              CII Exhibition · 5–6 August 2026 · 24+ Patent Applications Filed
+              24+ Patent Applications Filed
             </p>
 
             <span className="hidden h-6 w-px bg-[#0B1730]/15 lg:block" />
