@@ -11,6 +11,7 @@ const navItems = [
   { label: "Gallery", id: "gallery" },
   { label: "News", id: "news" },
   { label: "Team", id: "team" },
+  { label: "Partners", id: "partners" },
 ];
 
 const sectionAliases: Record<string, string[]> = {
@@ -176,7 +177,11 @@ export default function Navbar() {
               <button
                 key={item.id}
                 type="button"
-                onClick={() => scrollToSection(item.id)}
+               onClick={() =>
+  item.id === "partners"
+    ? window.open("https://admsolarpower.com", "_blank", "noopener,noreferrer")
+    : scrollToSection(item.id)
+}
                 aria-current={isActive ? "true" : undefined}
                 className={`group relative whitespace-nowrap rounded-full px-3.5 py-2 font-sans text-[16px] font-medium tracking-[-0.005em] transition-all duration-300 hover:-translate-y-px hover:bg-[#E3F1FC] hover:text-[#0A7FD6] hover:shadow-[0_6px_16px_rgba(0,143,224,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF] focus-visible:ring-offset-2 active:bg-[#0A0F1C] active:text-white xl:px-4 xl:text-[17px] ${
                   isActive
@@ -229,7 +234,14 @@ export default function Navbar() {
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => scrollToSection(item.id)}
+                 onClick={() => {
+  if (item.id === "partners") {
+    window.open("https://admsolarpower.com", "_blank", "noopener,noreferrer");
+    setMobileMenuOpen(false);
+  } else {
+    scrollToSection(item.id);
+  }
+}}
                   className={`group flex w-full items-center justify-between rounded-xl border-b border-[#D7E8F7] px-2 py-4 text-left font-sans text-[18px] font-medium transition-all duration-200 hover:bg-white hover:pl-4 hover:text-[#0A7FD6] focus-visible:bg-white focus-visible:text-[#0A7FD6] focus-visible:outline-none active:bg-[#0A0F1C] active:text-white ${
                     isActive
                       ? "bg-[#0A0F1C] text-white hover:!bg-[#0A0F1C] hover:!text-white"

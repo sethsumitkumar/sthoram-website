@@ -2,22 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight, FileText, Zap, X } from "lucide-react";
-import { Newsreader, Manrope } from "next/font/google";
-
-// Headings, titles and the statement bar
-const serif = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-// Body text, labels, buttons and the form
-const sans = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 const IMG = {
   hero: "/images/gallery/Mist-Softened.png",
@@ -241,7 +225,7 @@ try {
   return (
     <section
       id="white-papers"
-      className={`${sans.className} relative pb-12 pt-12 antialiased sm:py-24 lg:py-28`}
+      className={`font-sans relative pb-12 pt-12 antialiased sm:py-24 lg:py-28`}
       style={{ backgroundColor: IVORY, overflowX: "clip" }}
     >
       <style>{`
@@ -483,7 +467,7 @@ try {
           </div>
 
           <h2
-            className={`${serif.className} text-[40px] font-medium leading-[1.05] tracking-[-0.025em] sm:text-[62px] lg:text-[80px]`}
+            className={`font-serif text-[40px] font-medium leading-[1.05] tracking-[-0.025em] sm:text-[62px] lg:text-[80px]`}
             style={{ color: INK }}
           >
             Technical depth,
@@ -584,7 +568,7 @@ try {
 
                   {/* Title */}
                   <h3
-                    className={`${serif.className} mt-3.5 max-w-[86%] text-[20px] font-medium leading-[1.2] tracking-[-0.015em] sm:mt-8 sm:max-w-[78%] sm:text-[27px] sm:leading-[1.16] sm:tracking-[-0.02em]`}
+                    className={`font-serif mt-3.5 max-w-[86%] text-[20px] font-medium leading-[1.2] tracking-[-0.015em] sm:mt-8 sm:max-w-[78%] sm:text-[27px] sm:leading-[1.16] sm:tracking-[-0.02em]`}
                     style={{ color: INK }}
                   >
                     {paper.title}
@@ -665,7 +649,7 @@ try {
             />
 
             <p
-              className={`${serif.className} relative text-[13.5px] font-normal italic tracking-[0.12em] text-[#F6EFE5] sm:text-[18px] sm:tracking-[0.16em]`}
+              className={`font-serif relative text-[13.5px] font-normal italic tracking-[0.12em] text-[#F6EFE5] sm:text-[18px] sm:tracking-[0.16em]`}
             >
               Research <span style={{ color: COPPER_LIGHT }}>·</span>{" "}
               Engineering <span style={{ color: COPPER_LIGHT }}>·</span>{" "}
@@ -689,7 +673,7 @@ try {
       {/* White paper access form (bottom sheet on phone, centered dialog on larger screens) */}
       {selectedPaper && (
         <div
-          className={`${sans.className} fixed inset-0 z-[100] flex items-end justify-center overflow-y-auto bg-[#2A1C10]/50 antialiased backdrop-blur-sm sm:items-center sm:px-4 sm:py-6`}
+          className={`font-sans fixed inset-0 z-[100] flex items-end justify-center overflow-y-auto bg-[#2A1C10]/50 antialiased backdrop-blur-sm sm:items-center sm:px-4 sm:py-6`}
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) closeForm();
           }}
@@ -725,7 +709,7 @@ try {
 
                   <h3
                     id="white-paper-form-title"
-                    className={`${serif.className} mt-2.5 text-[28px] font-medium leading-[1.1] tracking-[-0.02em] sm:mt-3 sm:text-[36px]`}
+                    className={`font-serif mt-2.5 text-[28px] font-medium leading-[1.1] tracking-[-0.02em] sm:mt-3 sm:text-[36px]`}
                     style={{ color: INK }}
                   >
                     Access the white paper
